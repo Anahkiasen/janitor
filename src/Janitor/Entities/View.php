@@ -2,7 +2,6 @@
 namespace Janitor\Entities;
 
 use Illuminate\Support\Fluent;
-use Symfony\Component\Finder\SplFileInfo;
 
 class View extends AnalyzedFile
 {

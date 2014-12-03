@@ -2,7 +2,6 @@
 namespace Janitor\Services\Tokenizers;
 
 use Janitor\Interfaces\TokenizerInterface;
-use Symfony\Component\Finder\SplFileInfo;
 
 class PhpTokenizer implements TokenizerInterface
 {

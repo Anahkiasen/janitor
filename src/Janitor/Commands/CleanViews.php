@@ -31,7 +31,7 @@ class CleanViews extends Command
 		parent::__construct();
 
 		$this->analyzer = $analyzer;
-		$this->files = $files;
+		$this->files    = $files;
 	}
 
 	/**
@@ -53,7 +53,7 @@ class CleanViews extends Command
 		});
 
 		// Display unused views
-		$this->comment($unused->count(). ' unused views were found:');
+		$this->comment($unused->count().' unused views were found:');
 		foreach ($unused as $view) {
 			$this->line('| '.$view->name);
 		}

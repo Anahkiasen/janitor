@@ -4,7 +4,6 @@ namespace Janitor\Services\Tokenizers;
 use Janitor\Interfaces\TokenizerInterface;
 use Twig_Environment;
 use Twig_Error_Syntax;
-use Twig_Lexer;
 use Twig_Token;
 
 class TwigTokenizer implements TokenizerInterface
@@ -18,7 +17,7 @@ class TwigTokenizer implements TokenizerInterface
 	 */
 	public function tokenize($file)
 	{
-		$twig  = new Twig_Environment();
+		$twig = new Twig_Environment();
 
 		$tokens = [];
 		$stream = $twig->tokenize(trim($file));

@@ -1,7 +1,6 @@
 <?php
 namespace Janitor\Services\Analyzers;
 
-use Illuminate\Support\Str;
 use Janitor\Abstracts\AbstractAnalyzer;
 use Janitor\Entities\View;
 use Janitor\Interfaces\AnalyzerInterface;
