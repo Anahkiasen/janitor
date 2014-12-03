@@ -42,15 +42,13 @@ class CleanViews extends Command
 
 		// Get unused views
 		$unused = $this->analyzer->getFiles();
-		$unused = $unused->sortBy('usage');
-		$unused = $unused->map(function (View $view) {
-			return [$view->name, $view->usage * 100];
+		$unused = $unused->filter(function ($view) {
+			return $view->usage === 0;
 		});
 
-		// Present views
-		$table = new Table($this->output);
-		$table->setHeaders(['View', 'Usage certainty']);
-		$table->setRows($unused->all());
-		$table->render();
+		$this->comment($unused->count(). ' unused views were found:');
+		foreach ($unused as $view) {
+			$this->line('| '.$view->name);
+		}
 	}
 }
