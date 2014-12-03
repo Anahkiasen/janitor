@@ -42,12 +42,9 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 		foreach ($this->files as $key => $view) {
 			foreach ($codebase as $file) {
 				foreach ($view->getUsageNeedles() as $needle) {
-					extract($needle);
-
-					if (Str::contains($file, $needles)) {
-						$this->files[$key]['usage'] = $usage;
+					if (Str::contains($file, $needle['needles'])) {
+						$this->files[$key]['usage'] = $needle['usage'];
 						break 2;
-					} else {
 					}
 				}
 			}
