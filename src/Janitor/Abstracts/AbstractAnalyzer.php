@@ -2,14 +2,14 @@
 namespace Janitor\Abstracts;
 
 use Illuminate\Support\Collection;
-use Janitor\Models\Codebase;
+use Janitor\Services\Entities\Codebase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
 abstract class AbstractAnalyzer
 {
 	/**
-	 * @type Codebase
+	 * @type \Janitor\Services\Entities\Codebase
 	 */
 	protected $codebase;
 
@@ -26,7 +26,7 @@ abstract class AbstractAnalyzer
 	protected $output;
 
 	/**
-	 * @param Codebase $codebase
+	 * @param \Janitor\Services\Entities\Codebase $codebase
 	 */
 	public function __construct(Codebase $codebase)
 	{

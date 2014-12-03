@@ -1,5 +1,5 @@
 <?php
-namespace Janitor\Models;
+namespace Janitor\Services\Entities;
 
 use Illuminate\Support\Fluent;
 use Symfony\Component\Finder\SplFileInfo;

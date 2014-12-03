@@ -1,6 +1,7 @@
 <?php
-namespace Janitor\Models;
+namespace Janitor\Services\Entities;
 
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Finder\Finder;
 
 /**
