@@ -2,8 +2,8 @@
 namespace Janitor\Commands;
 
 use Illuminate\Console\Command;
-use Janitor\Models\View;
 use Janitor\Analyzers\ViewsAnalyzer;
+use Janitor\Models\View;
 use Symfony\Component\Console\Helper\Table;
 
 class CleanViews extends Command

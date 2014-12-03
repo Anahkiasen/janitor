@@ -1,14 +1,10 @@
 <?php
 namespace Janitor\Analyzers;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Janitor\Abstracts\AbstractAnalyzer;
 use Janitor\Interfaces\AnalyzerInterface;
 use Janitor\Models\View;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {

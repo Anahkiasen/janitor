@@ -1,7 +1,6 @@
 <?php
 namespace Janitor\Models;
 
-use Illuminate\Cache\Repository;
 use Symfony\Component\Finder\Finder;
 
 /**
