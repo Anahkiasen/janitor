@@ -1,6 +1,19 @@
 {
   "name": "anahkiasen/janitor",
-  "description": "",
+  "description": "Janitor is a tool to help you remove unused code, views and assets from your codebase.",
+  "license": "MIT",
+  "keywords": [
+	"laravel",
+	"cleanup",
+	"unused"
+  ],
+  "authors": [
+	{
+	  "name": "Maxime Fabre",
+	  "email": "ehtnam6@gmail.com",
+	  "homepage": "http://autopergamene.eu/en"
+	}
+  ],
   "require": {
 	"php": ">=5.4.0",
 	"illuminate/support": "4.2.*"
