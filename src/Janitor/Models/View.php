@@ -20,8 +20,7 @@ class View extends Fluent
 	/**
 	 * Create a new fluent container instance.
 	 *
-	 * @param  array|object	$attributes
-	 * @return void
+	 * @param  array|object $attributes
 	 */
 	public function __construct($attributes = array())
 	{
@@ -39,11 +38,12 @@ class View extends Fluent
 	public function getUsageNeedles()
 	{
 		if (!$this->usageNeedles) {
-			$needles = array(
+			$extension = '.'.$this->file->getExtension();
+			$needles   = array(
 				['usage' => 1, 'needles' => $this->file->getPathname()],
 				['usage' => 0.5, 'needles' => $this->file->getBasename()],
-				['usage' => 0.25, 'needles' => $this->getNonumeralName($this->file->getBasename())],
-				['usage' => 0.1, 'needles' => $this->getUnlocalizedName($this->file->getBasename())],
+				['usage' => 0.25, 'needles' => $this->getNonumeralName($this->file->getBasename($extension))],
+				['usage' => 0.1, 'needles' => $this->getUnlocalizedName($this->file->getBasename($extension))],
 			);
 
 			$this->usageNeedles = array_map([$this, 'sanitizeNeedles'], $needles);

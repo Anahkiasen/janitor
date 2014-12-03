@@ -1,5 +1,5 @@
 <?php
-namespace Janitor\Services;
+namespace Janitor\Analyzers;
 
 use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ViewsCleaner
+class ViewsAnalyzer
 {
 	/**
 	 * @type Container
