@@ -6,16 +6,6 @@ use Illuminate\Support\ServiceProvider;
 class JanitorServiceProvider extends ServiceProvider
 {
 	/**
-	 * Bootstrap the application events.
-	 *
-	 * @return void
-	 */
-	public function boot()
-	{
-		$this->package('anahkiasen/janitor');
-	}
-
-	/**
 	 * Register the service provider.
 	 *
 	 * @return void
@@ -28,12 +18,12 @@ class JanitorServiceProvider extends ServiceProvider
 	}
 
 	/**
-	 * Get the services provided by the provider.
+	 * Bootstrap the application events.
 	 *
-	 * @return array
+	 * @return void
 	 */
-	public function provides()
+	public function boot()
 	{
-		return array();
+		$this->package('anahkiasen/janitor');
 	}
 }
