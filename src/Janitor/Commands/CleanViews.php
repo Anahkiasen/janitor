@@ -16,16 +16,16 @@ class CleanViews extends Command
 	/**
 	 * @type ViewsAnalyzer
 	 */
-	protected $cleaner;
+	protected $analyzer;
 
 	/**
-	 * @param ViewsAnalyzer $cleaner
+	 * @param ViewsAnalyzer $analyzer
 	 */
-	public function __construct(ViewsAnalyzer $cleaner)
+	public function __construct(ViewsAnalyzer $analyzer)
 	{
 		parent::__construct();
 
-		$this->cleaner = $cleaner;
+		$this->analyzer = $analyzer;
 	}
 
 	/**
@@ -33,14 +33,21 @@ class CleanViews extends Command
 	 */
 	public function fire()
 	{
-		$this->cleaner->setOutput($this->output);
-		$this->cleaner->analyze();
-		$unused = $this->cleaner->getViews();
+		$views = $this->laravel['config']['view.paths'][0];
+
+		// Setup analyzer
+		$this->analyzer->setOutput($this->output);
+		$this->analyzer->setFiles($views, ['php', 'twig']);
+		$this->analyzer->analyze();
+
+		// Get unused views
+		$unused = $this->analyzer->getFiles();
 		$unused = $unused->sortBy('usage');
 		$unused = $unused->map(function (View $view) {
 			return [$view->name, $view->usage * 100];
 		});
 
+		// Present views
 		$table = new Table($this->output);
 		$table->setHeaders(['View', 'Usage certainty']);
 		$table->setRows($unused->all());

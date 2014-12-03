@@ -13,18 +13,23 @@ use Symfony\Component\Finder\SplFileInfo;
 class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
 	/**
-	 * The existing views
+	 * Setup the files to analyze
 	 *
-	 * @type View[]|Collection
+	 * @param string $folder
+	 * @param string $extensions
 	 */
-	protected $views;
-
-	/**
-	 * @return View[]|Collection
-	 */
-	public function getViews()
+	public function setFiles($folder, $extensions)
 	{
-		return $this->views;
+		parent::setFiles($folder, $extensions);
+
+		// Create View instances
+		foreach ($this->files as $key => $view) {
+			$this->files[$key] = new View(array(
+				'file'  => $view,
+				'usage' => 0,
+				'views' => $folder,
+			));
+		}
 	}
 
 	/**
@@ -32,55 +37,15 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	 */
 	public function analyze()
 	{
-		$this->views = $this->gatherViews();
+		$codebase = $this->codebase->getSerialized();
 
-		$this->findUsages();
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// ANALYZE ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-
-	/**
-	 * Get all the existing views
-	 *
-	 * @return Collection|View[]
-	 */
-	protected function gatherViews()
-	{
-		$viewsFolder = $this->app->config->get('view.paths')[0];
-
-		// Create Finder
-		$finder = new Finder();
-		$views  = $finder->files()->in($viewsFolder);
-
-		// Create View instances
-		$collection = new Collection();
-		foreach ($views as $view) {
-			$collection[] = new View(array(
-				'file'  => $view,
-				'usage' => 0,
-				'views' => $viewsFolder,
-			));
-		}
-
-		return $collection;
-	}
-
-	/**
-	 * Find usages of the views in the app's files
-	 */
-	protected function findUsages()
-	{
-		$codebase = $this->app['janitor.codebase']->getSerialized();
-
-		foreach ($this->views as $key => $view) {
+		foreach ($this->files as $key => $view) {
 			foreach ($codebase as $file) {
 				foreach ($view->getUsageNeedles() as $needle) {
 					extract($needle);
 
 					if (Str::contains($file, $needles)) {
-						$this->views[$key]['usage'] = $usage;
+						$this->files[$key]['usage'] = $usage;
 						break 2;
 					} else {
 					}

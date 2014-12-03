@@ -22,10 +22,6 @@ class JanitorServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		// Register services
-		$this->app->singleton('janitor.codebase', 'Janitor\Models\Codebase');
-		$this->app->singleton('janitor.views', 'Janitor\Services\ViewsCleaner');
-
 		$this->commands(array(
 			'Janitor\Commands\CleanViews',
 		));

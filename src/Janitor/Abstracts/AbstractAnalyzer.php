@@ -1,26 +1,65 @@
 <?php
 namespace Janitor\Abstracts;
 
-use Illuminate\Container\Container;
+use Illuminate\Support\Collection;
+use Janitor\Models\Codebase;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Finder\Finder;
 
 abstract class AbstractAnalyzer
 {
 	/**
-	 * @type Container
+	 * @type Codebase
 	 */
-	protected $app;
+	protected $codebase;
+
+	/**
+	 * The existing views
+	 *
+	 * @type Collection
+	 */
+	protected $files;
+
 	/**
 	 * @type OutputInterface
 	 */
 	protected $output;
 
 	/**
-	 * @param Container $app
+	 * @param Codebase $codebase
 	 */
-	public function __construct(Container $app)
+	public function __construct(Codebase $codebase)
 	{
-		$this->app = $app;
+		$this->codebase = $codebase;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	/////////////////////////////// FILES ////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Setup the files to analyze
+	 *
+	 * @param string $folder
+	 * @param string $extensions
+	 */
+	public function setFiles($folder, $extensions)
+	{
+		// Create Finder
+		$finder     = new Finder();
+		$extensions = implode('|', $extensions);
+		$files      = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
+		$files      = iterator_to_array($files);
+
+		$this->files = new Collection($files);
+	}
+
+	/**
+	 * @return Collection
+	 */
+	public function getFiles()
+	{
+		return $this->files;
 	}
 
 	//////////////////////////////////////////////////////////////////////
