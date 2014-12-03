@@ -18,13 +18,17 @@ Then add Janitor's service provider to your application's local providers:
 
 ## Usage
 
+### Command-line
+
 You can see the various things Janitor can do by simply running:
 
 ```bash
 $ php artisan list janitor
 ```
 
-Janitor can also be used programatically, in order to do so:
+### Programmatically
+
+Janitor can also be used programmatically, in order to do so:
 
 ```php
 <?php
@@ -49,6 +53,17 @@ Its most important property is the `usage` property, it's an integer whose value
   "usage": 0
 }
 ```
+
+### Available analyzers
+
+| Name             | Description                                          | Status  |
+| ---              | ---                                                  | ---     |
+| ViewsAnalyzer    | Analyzes your codebase and check for unused views    |         |
+| DatabaseAnalyzer | Checks your database for dead entries                | Planned |
+| CodebaseAnalyzer | Checks your codebase for unused classes, models, etc | Planned |
+| RoutesAnalyzer   | Checks your views and controllers for unused routes  | Planned |
+
+Contributions and suggestions are welcome.
 
 ## Testing
 
