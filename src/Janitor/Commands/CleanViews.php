@@ -2,9 +2,11 @@
 namespace Janitor\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Filesystem\Filesystem;
 use Janitor\Services\Analyzers\ViewsAnalyzer;
 use Janitor\Services\Entities\View;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputOption;
 
 class CleanViews extends Command
 {
@@ -17,15 +19,20 @@ class CleanViews extends Command
 	 * @type ViewsAnalyzer
 	 */
 	protected $analyzer;
+	/**
+	 * @type Filesystem
+	 */
+	private $files;
 
 	/**
 	 * @param ViewsAnalyzer $analyzer
 	 */
-	public function __construct(ViewsAnalyzer $analyzer)
+	public function __construct(ViewsAnalyzer $analyzer, Filesystem $files)
 	{
 		parent::__construct();
 
 		$this->analyzer = $analyzer;
+		$this->files = $files;
 	}
 
 	/**
@@ -46,9 +53,26 @@ class CleanViews extends Command
 			return $view->usage === 0;
 		});
 
+		// Display unused views
 		$this->comment($unused->count(). ' unused views were found:');
 		foreach ($unused as $view) {
 			$this->line('| '.$view->name);
 		}
+
+		// Remove if asked
+		if ($this->option('delete')) {
+			$unused = $unused->map(function (View $view) {
+				return realpath($view->file->getPathname());
+			});
+
+			$this->files->delete($unused->all());
+		}
+	}
+
+	public function getOptions()
+	{
+		return array(
+			['delete', null, InputOption::VALUE_NONE, 'Delete the unused views found'],
+		);
 	}
 }
