@@ -38,11 +38,11 @@ class CleanViews extends Command
 		$unused = $this->cleaner->getViews();
 		$unused = $unused->sortBy('usage');
 		$unused = $unused->map(function (View $view) {
-			return [$view->file->getPathName(), $view->usage * 100];
+			return [$view->name, $view->usage * 100, $view->getPattern()];
 		});
 
 		$table = new Table($this->output);
-		$table->setHeaders(['View', 'Usage certainty']);
+		$table->setHeaders(['View', 'Usage certainty', 'Pattern']);
 		$table->setRows($unused->all());
 		$table->render();
 	}
