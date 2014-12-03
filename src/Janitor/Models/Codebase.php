@@ -12,42 +12,44 @@ use Symfony\Component\Finder\Finder;
 class Codebase
 {
 	/**
-	 * @type Repository
-	 */
-	private $cache;
-
-	/**
+	 * The files that are part of the codebase
+	 *
 	 * @type SplFileInfo[]
 	 */
 	protected $files = [];
 
 	/**
-	 * Build a new codebase
+	 * Serialized version of the codebase
 	 *
-	 * @param Repository $cache
+	 * @type string[]
 	 */
-	public function __construct(Repository $cache)
+	protected $serialized;
+
+	/**
+	 * Build a new codebase
+	 */
+	public function __construct()
 	{
 		$finder = new Finder();
 		$files  = $finder->files()->name('/\.(php|twig)$/')->in(app_path());
 		$files  = iterator_to_array($files);
 
 		$this->files = $files;
-		$this->cache = $cache;
 	}
 
 	/**
 	 * Get a serialized version of the codebase
 	 *
-	 * @return string
+	 * @return string[]
 	 */
 	public function getSerialized()
 	{
-		$contents = [];
-		foreach ($this->files as $key => $file) {
-			$contents[$file->getBasename()] = $file->getContents();
+		if (!$this->serialized) {
+			foreach ($this->files as $key => $file) {
+				$this->serialized[$file->getBasename()] = $file->getContents();
+			}
 		}
 
-		return $contents;
+		return $this->serialized;
 	}
 }
