@@ -1,12 +1,11 @@
 <?php
-namespace Janitor\Services\Entities;
+namespace Janitor\Entities;
 
 use Janitor\Services\Tokenizers\DefaultTokenizer;
 use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Janitor\Interfaces\TokenizerInterface;
 
 /**
  * The user's codebase
@@ -31,11 +30,13 @@ class Codebase
 
 	/**
 	 * Build a new codebase
+	 *
+	 * @param string $folder Where the codebase resides
 	 */
-	public function __construct()
+	public function __construct($folder = null)
 	{
 		$finder = new Finder();
-		$files  = $finder->files()->name('/\.(php|twig)$/')->in(app_path());
+		$files  = $finder->files()->name('/\.(php|twig)$/')->in($folder);
 		$files  = iterator_to_array($files);
 
 		$this->files = $files;

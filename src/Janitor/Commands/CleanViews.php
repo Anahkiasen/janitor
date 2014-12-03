@@ -3,9 +3,8 @@ namespace Janitor\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Janitor\Entities\View;
 use Janitor\Services\Analyzers\ViewsAnalyzer;
-use Janitor\Services\Entities\View;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputOption;
 
 class CleanViews extends Command
@@ -69,6 +68,11 @@ class CleanViews extends Command
 		}
 	}
 
+	/**
+	 * Get the console command options.
+	 *
+	 * @return array
+	 */
 	public function getOptions()
 	{
 		return array(

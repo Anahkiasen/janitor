@@ -2,21 +2,22 @@
 namespace Janitor\Abstracts;
 
 use Illuminate\Support\Collection;
-use Janitor\Services\Entities\Codebase;
+use Janitor\Entities\AnalyzedFile;
+use Janitor\Entities\Codebase;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
 abstract class AbstractAnalyzer
 {
 	/**
-	 * @type \Janitor\Services\Entities\Codebase
+	 * @type \Janitor\Entities\Codebase
 	 */
 	protected $codebase;
 
 	/**
 	 * The existing views
 	 *
-	 * @type Collection
+	 * @type Collection|AnalyzedFile[]
 	 */
 	protected $files;
 
@@ -26,7 +27,7 @@ abstract class AbstractAnalyzer
 	protected $output;
 
 	/**
-	 * @param \Janitor\Services\Entities\Codebase $codebase
+	 * @param \Janitor\Entities\Codebase $codebase
 	 */
 	public function __construct(Codebase $codebase)
 	{
@@ -55,7 +56,7 @@ abstract class AbstractAnalyzer
 	}
 
 	/**
-	 * @return Collection
+	 * @return Collection|AnalyzedFile[]
 	 */
 	public function getFiles()
 	{

@@ -1,33 +1,15 @@
 <?php
-namespace Janitor\Services\Entities;
+namespace Janitor\Entities;
 
 use Illuminate\Support\Fluent;
 use Symfony\Component\Finder\SplFileInfo;
 
-/**
- * @property string      name
- * @property SplFileInfo file   The file itself
- * @property integer     usage  Usage percentage
- * @property string      views  Folder where the views reside
- */
-class View extends Fluent
+class View extends AnalyzedFile
 {
 	/**
 	 * @type string[]
 	 */
 	protected $usageNeedles;
-
-	/**
-	 * Create a new fluent container instance.
-	 *
-	 * @param  array|object $attributes
-	 */
-	public function __construct($attributes = array())
-	{
-		parent::__construct($attributes);
-
-		$this->name = str_replace($this->views.DS, null, $this->file->getPathname());
-	}
 
 	/**
 	 * Get the possible occurences of the view's name and
@@ -109,7 +91,7 @@ class View extends Fluent
 	protected function computeNames($name)
 	{
 		// Compute name with and without extension
-		$name     = str_replace($this->views.'/', null, $name);
+		$name     = str_replace($this->root.'/', null, $name);
 		$basename = str_replace('.'.$this->file->getExtension(), null, $name);
 
 		return array(

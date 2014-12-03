@@ -3,8 +3,8 @@ namespace Janitor\Services\Analyzers;
 
 use Illuminate\Support\Str;
 use Janitor\Abstracts\AbstractAnalyzer;
+use Janitor\Entities\View;
 use Janitor\Interfaces\AnalyzerInterface;
-use Janitor\Services\Entities\View;
 
 class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
@@ -20,16 +20,14 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 
 		// Create View instances
 		foreach ($this->files as $key => $view) {
-			$this->files[$key] = new View(array(
-				'file'  => $view,
-				'usage' => 0,
-				'views' => $folder,
-			));
+			$this->files[$key] = new View($view, $folder);
 		}
 	}
 
 	/**
 	 * Clean the views
+	 *
+	 * @return Collection
 	 */
 	public function analyze()
 	{
@@ -43,11 +41,13 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 
 				foreach ($view->getUsageNeedles() as $needle) {
 					if ($this->containsTokens($tokens, $needle['needles'])) {
-						$this->files[$key]['usage'] = $needle['usage'];
+						$this->files[$key]->usage = $needle['usage'];
 						break 2;
 					}
 				}
 			}
 		}
+
+		return $this->getFiles();
 	}
 }

@@ -2,6 +2,7 @@
 namespace Janitor;
 
 use Illuminate\Support\ServiceProvider;
+use Janitor\Entities\Codebase;
 
 class JanitorServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,11 @@ class JanitorServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		// Define codebase
+		$this->app->singleton('Janitor\Entities\Codebase', function ($app) {
+			return new Codebase($app['path']);
+		});
+
 		$this->commands(array(
 			'Janitor\Commands\CleanViews',
 		));
