@@ -33,12 +33,16 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	 */
 	public function analyze()
 	{
-		$codebase = $this->codebase->getSerialized();
+		$codebase = $this->codebase->getTokenized();
 
 		foreach ($this->files as $key => $view) {
-			foreach ($codebase as $file) {
+			foreach ($codebase as $tokens) {
+				if (!$tokens) {
+					continue;
+				}
+
 				foreach ($view->getUsageNeedles() as $needle) {
-					if (Str::contains($file, $needle['needles'])) {
+					if ($this->containsTokens($tokens, $needle['needles'])) {
 						$this->files[$key]['usage'] = $needle['usage'];
 						break 2;
 					}

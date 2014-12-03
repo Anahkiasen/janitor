@@ -1,8 +1,12 @@
 <?php
 namespace Janitor\Services\Entities;
 
-use Symfony\Component\Finder\SplFileInfo;
+use Janitor\Services\Tokenizers\DefaultTokenizer;
+use Janitor\Services\Tokenizers\PhpTokenizer;
+use Janitor\Services\Tokenizers\TwigTokenizer;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
+use Janitor\Interfaces\TokenizerInterface;
 
 /**
  * The user's codebase
@@ -23,7 +27,7 @@ class Codebase
 	 *
 	 * @type string[]
 	 */
-	protected $serialized;
+	protected $tokenized;
 
 	/**
 	 * Build a new codebase
@@ -37,19 +41,54 @@ class Codebase
 		$this->files = $files;
 	}
 
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////// TOKENIZATION ////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Get a serialized version of the codebase
 	 *
 	 * @return string[]
 	 */
-	public function getSerialized()
+	public function getTokenized()
 	{
-		if (!$this->serialized) {
+		if (!$this->tokenized) {
 			foreach ($this->files as $key => $file) {
-				$this->serialized[$file->getBasename()] = $file->getContents();
+				$this->tokenized[$file->getBasename()] = $this->extractStringTokens($file);
 			}
 		}
 
-		return $this->serialized;
+		return $this->tokenized;
+	}
+
+	/**
+	 * Extract all strings from a given file
+	 *
+	 * @param SplFileInfo $file
+	 *
+	 * @return string[]
+	 */
+	protected function extractStringTokens(SplFileInfo $file)
+	{
+		// Get the contents of the file
+		$contents = $file->getContents();
+
+		// See if we have an available Tokenizer
+		// and use it to extract the contents
+		switch ($file->getExtension()) {
+			case 'php':
+				$tokenizer = new PhpTokenizer();
+				break;
+
+			case 'twig':
+				$tokenizer = new TwigTokenizer();
+				break;
+
+			default:
+				$tokenizer = new DefaultTokenizer();
+				break;
+		}
+
+		return $tokenizer->tokenize($contents);
 	}
 }

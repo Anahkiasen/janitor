@@ -85,4 +85,29 @@ abstract class AbstractAnalyzer
 	{
 		$this->output = $output;
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// ANALYZE ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Check if multiple string appear in an array
+	 *
+	 * @param array $tokens
+	 * @param array $needles
+	 *
+	 * @return boolean
+	 */
+	protected function containsTokens(array $tokens, array $needles)
+	{
+		foreach ($tokens as $token) {
+			foreach ($needles as $needle) {
+				if ($needle != '' && strpos($token, $needle) !== false) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }
