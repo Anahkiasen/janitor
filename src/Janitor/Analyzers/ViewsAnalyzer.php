@@ -1,21 +1,17 @@
 <?php
 namespace Janitor\Analyzers;
 
-use Illuminate\Container\Container;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Janitor\Abstracts\AbstractAnalyzer;
+use Janitor\Interfaces\AnalyzerInterface;
 use Janitor\Models\View;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
-class ViewsAnalyzer
+class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
-	/**
-	 * @type Container
-	 */
-	protected $app;
-
 	/**
 	 * The existing views
 	 *
@@ -24,53 +20,12 @@ class ViewsAnalyzer
 	protected $views;
 
 	/**
-	 * @type OutputInterface
-	 */
-	protected $output;
-
-	/**
-	 * @param Container $app
-	 */
-	public function __construct(Container $app)
-	{
-		$this->app = $app;
-	}
-
-	/**
 	 * @return View[]|Collection
 	 */
 	public function getViews()
 	{
 		return $this->views;
 	}
-
-	//////////////////////////////////////////////////////////////////////
-	/////////////////////////////// OUTPUT ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @param string $message
-	 */
-	public function line($message)
-	{
-		if (!$this->output) {
-			return;
-		}
-
-		$this->output->writeln('<comment>'.$message.'</comment>');
-	}
-
-	/**
-	 * @param OutputInterface $output
-	 */
-	public function setOutput(OutputInterface $output)
-	{
-		$this->output = $output;
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// ANALYZE ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Clean the views
@@ -81,6 +36,10 @@ class ViewsAnalyzer
 
 		$this->findUsages();
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// ANALYZE ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Get all the existing views
