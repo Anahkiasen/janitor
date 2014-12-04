@@ -3,6 +3,7 @@ namespace Janitor\Abstracts;
 
 use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\JsonableInterface;
+use Janitor\UsageNeedle;
 use JsonSerializable;
 
 abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSerializable, JsonableInterface
@@ -57,7 +58,34 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 	 *
 	 * @return \Janitor\UsageNeedle[]
 	 */
-	abstract public function getUsageMatrix();
+	abstract public function computeUsageMatrix();
+
+	/**
+	 * Get the usage matrix of the analyzed entity
+	 *
+	 * @return \Janitor\UsageNeedle[]
+	 */
+	public function getUsageMatrix()
+	{
+		// If it hasn't been computed yet, do it
+		if (!$this->usageMatrix) {
+			$this->usageMatrix = array_map([$this, 'processUsageNeedles'], $this->computeUsageMatrix());
+		}
+
+		return $this->usageMatrix;
+	}
+
+	/**
+	 * Process usage needles before storing them in the usage matrix
+	 *
+	 * @param UsageNeedle $usageNeedle
+	 *
+	 * @return UsageNeedle
+	 */
+	public function processUsageNeedles(UsageNeedle $usageNeedle)
+	{
+		return $usageNeedle;
+	}
 
 	/**
 	 * Return a string pattern concatenating

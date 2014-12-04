@@ -6,26 +6,25 @@ use Janitor\UsageNeedle;
 
 class View extends AbstractAnalyzedFile
 {
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////// USAGE MATRIX ////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Compute the usage matrix of the analyzed entity
 	 *
 	 * @return UsageNeedle[]
 	 */
-	public function getUsageMatrix()
+	public function computeUsageMatrix()
 	{
-		if (!$this->usageMatrix) {
-			$extension = '.'.$this->file->getExtension();
-			$needles   = array(
-				new UsageNeedle(1, $this->file->getPathname()),
-				new UsageNeedle(0.5, $this->file->getBasename()),
-				new UsageNeedle(0.25, $this->getNonumeralName($this->file->getBasename($extension))),
-				new UsageNeedle(0.1, $this->getUnlocalizedName($this->file->getBasename($extension))),
-			);
+		$extension = '.'.$this->file->getExtension();
 
-			$this->usageMatrix = array_map([$this, 'sanitizeNeedles'], $needles);
-		}
-
-		return $this->usageMatrix;
+		return array(
+			new UsageNeedle(1, $this->file->getPathname()),
+			new UsageNeedle(0.5, $this->file->getBasename()),
+			new UsageNeedle(0.25, $this->getNonumeralName($this->file->getBasename($extension))),
+			new UsageNeedle(0.1, $this->getUnlocalizedName($this->file->getBasename($extension))),
+		);
 	}
 
 	/**
@@ -35,7 +34,7 @@ class View extends AbstractAnalyzedFile
 	 *
 	 * @return UsageNeedle
 	 */
-	public function sanitizeNeedles(UsageNeedle $usageNeedle)
+	public function processUsageNeedles(UsageNeedle $usageNeedle)
 	{
 		$usageNeedle->needles = $this->computeNames($usageNeedle->needles);
 		$usageNeedle->needles = array_unique($usageNeedle->needles);

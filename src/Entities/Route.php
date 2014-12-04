@@ -32,12 +32,16 @@ class Route extends AbstractAnalyzedEntity
 		$this->route = $route;
 	}
 
+	//////////////////////////////////////////////////////////////////////
+	//////////////////////////// USAGE MATRIX ////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
 	/**
 	 * Compute the usage matrix of the analyzed entity
 	 *
 	 * @return UsageNeedle[]
 	 */
-	public function getUsageMatrix()
+	public function computeUsageMatrix()
 	{
 		return array(
 			new UsageNeedle(1, $this->route->getActionName()),
