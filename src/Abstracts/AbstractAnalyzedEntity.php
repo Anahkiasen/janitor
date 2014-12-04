@@ -84,6 +84,10 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 	 */
 	public function processUsageNeedles(UsageNeedle $usageNeedle)
 	{
+		// Remove duplicate needles
+		$usageNeedle->needles = (array) $usageNeedle->needles;
+		$usageNeedle->needles = array_unique($usageNeedle->needles);
+
 		return $usageNeedle;
 	}
 

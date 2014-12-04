@@ -48,10 +48,13 @@ class Route extends AbstractAnalyzedEntity
 	 */
 	public function computeUsageMatrix()
 	{
+		$url = new UsageNeedle(0.25, $this->route->getCompiled()->getRegex());
+		$url->setRegex(true);
+
 		return array(
 			new UsageNeedle(1, $this->route->getActionName()),
 			new UsageNeedle(0.5, $this->route->getName()),
-			new UsageNeedle(0.25, $this->route->getCompiled()->getRegex()),
+			$url,
 		);
 	}
 }

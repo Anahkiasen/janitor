@@ -37,9 +37,8 @@ class View extends AbstractAnalyzedFile
 	public function processUsageNeedles(UsageNeedle $usageNeedle)
 	{
 		$usageNeedle->needles = $this->computeNames($usageNeedle->needles);
-		$usageNeedle->needles = array_unique($usageNeedle->needles);
 
-		return $usageNeedle;
+		return parent::processUsageNeedles($usageNeedle);
 	}
 
 	//////////////////////////////////////////////////////////////////////
