@@ -97,7 +97,7 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 	public function getUsagePattern()
 	{
 		$pattern = [];
-		$matrix = $this->getUsageMatrix();
+		$matrix  = $this->getUsageMatrix();
 
 		// Merge needles
 		foreach ($matrix as $needle) {

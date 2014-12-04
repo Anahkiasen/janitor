@@ -15,7 +15,7 @@ class RoutesAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	 */
 	protected function createEntities()
 	{
-		$entities = [];
+		$entities         = [];
 		$routesCollection = $this->codebase->getRoutes();
 
 		foreach ($routesCollection as $route) {
