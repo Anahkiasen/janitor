@@ -31,9 +31,18 @@ class CleanRoutes extends Command
 		$this->analyzer = $analyzer;
 	}
 
+	/**
+	 * Execute the command
+	 */
 	public function fire()
 	{
 		$this->analyzer->setOutput($this->output);
 		$this->analyzer->analyze();
+
+		$unused = $this->analyzer->getUnusedEntities();
+		$this->comment($unused->count().' unused routes were found:');
+		foreach ($unused as $entity) {
+			$this->line('| '.$entity->name);
+		}
 	}
 }

@@ -51,8 +51,8 @@ class CleanViews extends Command
 
 		// Display unused views
 		$this->comment($unused->count().' unused views were found:');
-		foreach ($unused as $view) {
-			$this->line('| '.$view->name);
+		foreach ($unused as $entity) {
+			$this->line('| '.$entity->name);
 		}
 
 		// Remove if asked
