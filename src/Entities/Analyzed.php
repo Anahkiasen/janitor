@@ -6,7 +6,7 @@ use Illuminate\Support\Contracts\JsonableInterface;
 use JsonSerializable;
 use Symfony\Component\Finder\SplFileInfo;
 
-class AnalyzedFile implements ArrayableInterface, JsonSerializable, JsonableInterface
+class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterface
 {
 	/**
 	 * @type string

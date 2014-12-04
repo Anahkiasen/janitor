@@ -3,7 +3,7 @@ namespace Janitor\Entities;
 
 use Illuminate\Support\Fluent;
 
-class View extends AnalyzedFile
+class View extends Analyzed
 {
 	/**
 	 * @type string[]

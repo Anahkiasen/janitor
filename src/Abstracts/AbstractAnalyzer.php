@@ -3,7 +3,7 @@ namespace Janitor\Abstracts;
 
 use Illuminate\Support\Collection;
 use Janitor\Codebase;
-use Janitor\Entities\AnalyzedFile;
+use Janitor\Entities\Analyzed;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
@@ -16,8 +16,9 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * The existing views
+
 	 *
-	 * @type Collection|AnalyzedFile[]
+*@type Collection|Analyzed[]
 	 */
 	protected $files;
 
@@ -65,8 +66,9 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * Get all analyzed files
+
 	 *
-	 * @return Collection|AnalyzedFile[]
+*@return Collection|Analyzed[]
 	 */
 	public function getFiles()
 	{
@@ -75,15 +77,17 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * Get analyzed files unused by a certain threshold
+
 	 *
-	 * @param integer $threshold
+*@param integer $threshold
+
 	 *
-	 * @return Collection|AnalyzedFile[]
+*@return Collection|Analyzed[]
 	 */
 	public function getUnusedFiles($threshold = 0)
 	{
 		$files = clone $this->files;
-		$files = $files->filter(function (AnalyzedFile $file) use ($threshold) {
+		$files = $files->filter(function (Analyzed $file) use ($threshold) {
 			return $file->usage <= $threshold;
 		});
 

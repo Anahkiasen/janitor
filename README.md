@@ -43,7 +43,7 @@ $analyzer->setFiles('app/views');
 $files = $analyzer->analyze();
 ```
 
-Here, `$files` will be a Collection of instances of AnalyzedFile.
+Here, `$files` will be a Collection of instances of Analyzed.
 Its most important property is the `usage` property, it's an integer whose value goes from 0 (file unused) to 1 (file used). The value can vary between these two points to indicate how certain Janitor is that the file is used.
 
 ```json

@@ -87,7 +87,7 @@ class CleanViews extends Command
 	 *
 	 * @param string $views
 	 *
-	 * @return \Illuminate\Support\Collection|\Janitor\Entities\AnalyzedFile[]
+	 * @return \Illuminate\Support\Collection|\Janitor\Entities\Analyzed[]
 	 */
 	protected function getUnusedViews($views)
 	{
