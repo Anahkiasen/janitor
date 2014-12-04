@@ -10,6 +10,16 @@
          stopOnFailure="false"
          syntaxCheck="false"
 	>
+
+	<filter>
+		<whitelist>
+			<directory>src</directory>
+			<exclude>
+				<file>src/JanitorServiceProvider.php</file>
+			</exclude>
+		</whitelist>
+	</filter>
+
 	<testsuites>
 		<testsuite name="Janitor Test Suite">
 			<directory suffix=".php">./tests/</directory>
