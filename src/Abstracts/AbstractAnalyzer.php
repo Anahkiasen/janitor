@@ -2,6 +2,7 @@
 namespace Janitor\Abstracts;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Janitor\Codebase;
 use Janitor\UsageNeedle;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -46,6 +47,35 @@ abstract class AbstractAnalyzer
 	public function __construct(Codebase $codebase)
 	{
 		$this->codebase = $codebase;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// ENTITIES //////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Compute the entities from the information
+	 * that was passed to the analyzer
+	 *
+	 * @return AbstractAnalyzedEntity[]
+	 */
+	abstract protected function createEntities();
+
+	/**
+	 * Filter out ignored entities
+	 *
+	 * @return Collection
+	 */
+	protected function filterEntities()
+	{
+		$ignored = $this->codebase->getIgnored();
+
+		$entities = new Collection($this->createEntities());
+		$entities = $entities->filter(function (AbstractAnalyzedEntity $entity) use ($ignored) {
+			return !Str::contains($entity->name, $ignored);
+		});
+
+		return $entities;
 	}
 
 	/**
@@ -142,21 +172,13 @@ abstract class AbstractAnalyzer
 	//////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Compute the entities from the information
-	 * that was passed to the analyzer
-	 *
-	 * @return AbstractAnalyzedEntity[]
-	 */
-	abstract protected function createEntities();
-
-	/**
 	 * Analyze the entities and compute their usage
 	 *
 	 * @return Collection
 	 */
 	public function analyze()
 	{
-		$this->entities = new Collection($this->createEntities());
+		$this->entities = $this->filterEntities();
 		$codebase       = $this->codebase->getTokenized();
 
 		/** @type AbstractAnalyzedEntity $entity */
