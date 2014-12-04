@@ -24,6 +24,6 @@ class RoutesAnalyzerTest extends JanitorTestCase
 
 		$results = $analyzer->analyze();
 		$this->assertInstanceOf('Janitor\Entities\Route', $results->first());
-		$this->assertEquals(['GET /' => 0.25, 'GET /unused' => 0], $results->lists('usage', 'name'));
+		$this->assertEquals(['GET /' => 1, 'GET /unused' => 0], $results->lists('usage', 'name'));
 	}
 }

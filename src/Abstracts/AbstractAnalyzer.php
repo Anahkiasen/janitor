@@ -184,12 +184,12 @@ abstract class AbstractAnalyzer
 
 		/** @type AbstractAnalyzedEntity $entity */
 		foreach ($this->entities as $key => $entity) {
-			foreach ($codebase as $file => $tokens) {
-				if (!$tokens) {
-					continue;
-				}
+			foreach ($entity->getUsageMatrix() as $usageNeedle) {
+				foreach ($codebase as $file => $tokens) {
+					if (!$tokens) {
+						continue;
+					}
 
-				foreach ($entity->getUsageMatrix() as $usageNeedle) {
 					if ($token = $this->containsTokens($tokens, $usageNeedle)) {
 						$this->entities[$key]->usage        = $usageNeedle->usage;
 						$this->entities[$key]->occurences[] = array(
