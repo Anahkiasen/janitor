@@ -7,10 +7,9 @@ use Janitor\UsageNeedle;
 class View extends AbstractAnalyzedFile
 {
 	/**
-	 * Get the possible occurences of the view's name and
-	 * their usage score
+	 * Compute the usage matrix of the analyzed entity
 	 *
-	 * @return string[]
+	 * @return UsageNeedle[]
 	 */
 	public function getUsageMatrix()
 	{

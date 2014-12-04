@@ -2,22 +2,29 @@
 namespace Janitor\Services\Analyzers;
 
 use Janitor\Abstracts\AbstractAnalyzer;
+use Janitor\Entities\Route;
 use Janitor\Interfaces\AnalyzerInterface;
 
 class RoutesAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
 	/**
-	 * Run the analyze process
+	 * Compute the entities from the information
+	 * that was passed to the analyzed
+	 *
+	 * @return \Janitor\Abstracts\AbstractAnalyzedEntity[]
 	 */
-	public function analyze()
+	protected function createEntities()
 	{
-		$routes   = $this->codebase->getRoutes();
-		$codebase = $this->codebase->getTokenized();
+		$entities = [];
+		$routesCollection = $this->codebase->getRoutes();
 
-		foreach ($routes as $route) {
-			foreach ($codebase as $tokens) {
-				// ...
-			}
+		foreach ($routesCollection as $route) {
+			$entity = new Route($this->folder, $route->getUri());
+			$entity->setRoute($route);
+
+			$entities[] = $entity;
 		}
+
+		return $entities;
 	}
 }

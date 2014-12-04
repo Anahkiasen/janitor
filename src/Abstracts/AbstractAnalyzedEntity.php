@@ -54,6 +54,8 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 
 	/**
 	 * Compute the usage matrix of the analyzed entity
+	 *
+	 * @return \Janitor\UsageNeedle[]
 	 */
 	abstract public function getUsageMatrix();
 

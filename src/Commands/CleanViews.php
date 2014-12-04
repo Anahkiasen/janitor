@@ -84,16 +84,10 @@ class CleanViews extends Command
 
 	/**
 	 * Get the unused views
-
-
-
-*
-*@param string $views
-
-
-
-*
-*@return \Illuminate\Support\Collection|\Janitor\Abstracts\AbstractAnalyzedEntity[]
+	 *
+	 * @param string $views
+	 *
+	 * @return \Illuminate\Support\Collection|\Janitor\Abstracts\AbstractAnalyzedEntity[]
 	 */
 	protected function getUnusedViews($views)
 	{
@@ -105,6 +99,6 @@ class CleanViews extends Command
 		$this->analyzer->setFiles($views, ['php', 'twig']);
 		$this->analyzer->analyze();
 
-		return $this->analyzer->getUnusedFiles($threshold);
+		return $this->analyzer->getUnusedEntities($threshold);
 	}
 }

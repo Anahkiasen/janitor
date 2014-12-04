@@ -8,49 +8,21 @@ use Janitor\Interfaces\AnalyzerInterface;
 class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
 	/**
-	 * Setup the files to analyze
+	 * Compute the entities from the information
+	 * that was passed to the analyzed
 	 *
-	 * @param string $folder
-	 * @param string $extensions
+	 * @return \Janitor\Abstracts\AbstractAnalyzedEntity[]
 	 */
-	public function setFiles($folder, $extensions)
+	protected function createEntities()
 	{
-		parent::setFiles($folder, $extensions);
-
-		// Create View instances
+		$entities = [];
 		foreach ($this->files as $key => $file) {
-			$view = new View($folder, $file->getPathname());
+			$view = new View($this->folder, $file->getPathname());
 			$view->setFile($file);
 
-			$this->files[$key] = $view;
-		}
-	}
-
-	/**
-	 * Clean the views
-	 *
-	 * @return Collection
-	 */
-	public function analyze()
-	{
-		$codebase = $this->codebase->getTokenized();
-
-		/** @type \Janitor\Entities\View $view */
-		foreach ($this->files as $key => $view) {
-			foreach ($codebase as $tokens) {
-				if (!$tokens) {
-					continue;
-				}
-
-				foreach ($view->getUsageMatrix() as $usageNeedle) {
-					if ($this->containsTokens($tokens, $usageNeedle)) {
-						$this->files[$key]->usage = $usageNeedle->usage;
-						break 2;
-					}
-				}
-			}
+			$entities[$key] = $view;
 		}
 
-		return $this->getFiles();
+		return $entities;
 	}
 }
