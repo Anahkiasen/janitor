@@ -183,14 +183,19 @@ abstract class AbstractAnalyzer
 
 		/** @type AbstractAnalyzedEntity $entity */
 		foreach ($this->entities as $key => $entity) {
-			foreach ($codebase as $tokens) {
+			foreach ($codebase as $file => $tokens) {
 				if (!$tokens) {
 					continue;
 				}
 
 				foreach ($entity->getUsageMatrix() as $usageNeedle) {
-					if ($this->containsTokens($tokens, $usageNeedle)) {
-						$this->entities[$key]->usage = $usageNeedle->usage;
+					if ($token = $this->containsTokens($tokens, $usageNeedle)) {
+						$this->entities[$key]->usage        = $usageNeedle->usage;
+						$this->entities[$key]->occurences[] = array(
+							'file'    => $file,
+							'context' => $token,
+						);
+
 						break 2;
 					}
 				}
@@ -206,13 +211,13 @@ abstract class AbstractAnalyzer
 	 * @param array       $tokens
 	 * @param UsageNeedle $usageNeedle
 	 *
-	 * @return boolean
+	 * @return string|false
 	 */
 	protected function containsTokens(array $tokens, UsageNeedle $usageNeedle)
 	{
 		foreach ($tokens as $token) {
 			if ($usageNeedle->matches($token)) {
-				return true;
+				return $token;
 			}
 		}
 

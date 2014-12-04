@@ -32,6 +32,13 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 	public $usage = 0;
 
 	/**
+	 * The files in which the entity is used
+	 *
+	 * @type array
+	 */
+	public $occurences = [];
+
+	/**
 	 * An array defining patterns to look for
 	 * and the usage certainty they bring
 	 *
@@ -105,7 +112,7 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 
 		// Merge needles
 		foreach ($matrix as $needle) {
-			$pattern = array_merge($pattern, $needle['needles']);
+			$pattern = array_merge($pattern, $needle->needles);
 		}
 
 		// Transform into string
@@ -132,6 +139,7 @@ abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSeriali
 			'usage'         => $this->usage,
 			'usage_matrix'  => $this->usageMatrix,
 			'usage_pattern' => $this->getUsagePattern(),
+			'occurences'    => $this->occurences,
 		);
 	}
 
