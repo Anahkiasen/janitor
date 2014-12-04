@@ -64,11 +64,30 @@ abstract class AbstractAnalyzer
 	}
 
 	/**
+	 * Get all analyzed files
+	 *
 	 * @return Collection|AnalyzedFile[]
 	 */
 	public function getFiles()
 	{
 		return $this->files;
+	}
+
+	/**
+	 * Get analyzed files unused by a certain threshold
+	 *
+	 * @param integer $threshold
+	 *
+	 * @return Collection|AnalyzedFile[]
+	 */
+	public function getUnusedFiles($threshold = 0)
+	{
+		$files = clone $this->files;
+		$files = $files->filter(function (AnalyzedFile $file) use ($threshold) {
+			return $file->usage <= $threshold;
+		});
+
+		return $files;
 	}
 
 	//////////////////////////////////////////////////////////////////////

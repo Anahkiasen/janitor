@@ -17,8 +17,11 @@
   "require": {
 	"php": ">=5.4.0",
 	"illuminate/support": "4.2.*",
-    "twig/twig": "~1.16",
-    "symfony/finder": "~2.6"
+    "twig/twig": "~1.16"
+  },
+  "require-dev": {
+    "illuminate/console": "~4.2",
+    "illuminate/filesystem": "~4.2"
   },
   "autoload": {
 	"psr-4": {

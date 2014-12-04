@@ -74,6 +74,7 @@ class CleanViews extends Command
 	{
 		return array(
 			['delete', null, InputOption::VALUE_NONE, 'Delete the unused views found'],
+			['threshold', 'T', InputOption::VALUE_REQUIRED, 'The usage threshold to use'],
 		);
 	}
 
@@ -90,17 +91,14 @@ class CleanViews extends Command
 	 */
 	protected function getUnusedViews($views)
 	{
+		$threshold = $this->option('threshold');
+		$threshold = is_null($threshold) ? 0 : $threshold;
+
 		// Setup analyzer
 		$this->analyzer->setOutput($this->output);
 		$this->analyzer->setFiles($views, ['php', 'twig']);
 		$this->analyzer->analyze();
 
-		// Get unused views
-		$unused = $this->analyzer->getFiles();
-		$unused = $unused->filter(function ($view) {
-			return $view->usage === 0;
-		});
-
-		return $unused;
+		return $this->analyzer->getUnusedFiles($threshold);
 	}
 }
