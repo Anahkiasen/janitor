@@ -49,10 +49,19 @@ abstract class AbstractAnalyzer
 		// Create Finder
 		$finder     = new Finder();
 		$extensions = implode('|', $extensions);
-		$files      = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
-		$files      = iterator_to_array($files);
+		$finder     = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
 
-		$this->files = new Collection($files);
+		// Set ignored patterns
+		foreach ($this->codebase->getIgnored() as $pattern) {
+			var_dump($pattern);
+			$finder = $finder->notName($pattern);
+		}
+
+		// Wrap into Collection
+		$files = iterator_to_array($finder);
+		$files = new Collection($files);
+
+		$this->files = $files;
 	}
 
 	/**

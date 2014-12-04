@@ -22,6 +22,13 @@ class Codebase
 	protected $files = [];
 
 	/**
+	 * The files to ignore
+	 *
+	 * @type string[]
+	 */
+	protected $ignored;
+
+	/**
 	 * Serialized version of the codebase
 	 *
 	 * @type string[]
@@ -32,14 +39,35 @@ class Codebase
 	 * Build a new codebase
 	 *
 	 * @param string $folder Where the codebase resides
+	 * @param array  $ignored
 	 */
-	public function __construct($folder = null)
+	public function __construct($folder = null, $ignored = [])
 	{
 		$finder = new Finder();
-		$files  = $finder->files()->name('/\.(php|twig)$/')->in($folder);
-		$files  = iterator_to_array($files);
+		$files  = $finder
+			->files()
+			->name('/\.(php|twig)$/')
+			->in($folder);
 
-		$this->files = $files;
+		var_dump($ignored);
+		$this->ignored = $ignored;
+		$this->files   = iterator_to_array($files);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function getIgnored()
+	{
+		return $this->ignored;
+	}
+
+	/**
+	 * @param string[] $ignored
+	 */
+	public function setIgnored($ignored)
+	{
+		$this->ignored = $ignored;
 	}
 
 	//////////////////////////////////////////////////////////////////////
