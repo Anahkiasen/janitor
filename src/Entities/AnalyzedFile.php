@@ -37,7 +37,7 @@ class AnalyzedFile implements ArrayableInterface, JsonSerializable, JsonableInte
 		$this->file = $file;
 		$this->root = $root;
 
-		$this->name = str_replace($this->root.DS, null, $this->file->getPathname());
+		$this->name = str_replace($this->root.DIRECTORY_SEPARATOR, null, $this->file->getPathname());
 	}
 
 	//////////////////////////////////////////////////////////////////////
