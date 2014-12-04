@@ -17,17 +17,24 @@
   "require": {
 	"php": ">=5.4.0",
 	"illuminate/support": "4.2.*",
-    "twig/twig": "~1.16"
+    "twig/twig": "~1.16",
+    "illuminate/config": "~4.2"
   },
   "require-dev": {
     "illuminate/console": "~4.2",
     "illuminate/filesystem": "~4.2",
-    "illuminate/routing": "~4.2"
+    "illuminate/routing": "~4.2",
+    "phpunit/phpunit": "~4.3"
   },
   "autoload": {
 	"psr-4": {
 	  "Janitor\\": "src"
 	}
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Janitor\\": "tests"
+    }
   },
   "minimum-stability": "stable"
 }

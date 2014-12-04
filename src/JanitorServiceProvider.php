@@ -1,6 +1,8 @@
 <?php
 namespace Janitor;
 
+use Illuminate\Config\FileLoader;
+use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
 
 // Define DS
@@ -17,9 +19,38 @@ class JanitorServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->app->config->package('anahkiasen/janitor', __DIR__.'/../config');
+		$this->registerCoreClasses();
+		$this->registerJanitorClasses();
 
-		// Define codebase
+		if ($this->app->bound('artisan')) {
+			$this->commands(array(
+				'Janitor\Commands\CleanViews',
+				'Janitor\Commands\CleanRoutes',
+			));
+		}
+	}
+
+	/**
+	 * Register third party services
+	 */
+	protected function registerCoreClasses()
+	{
+		$this->app->bindIf('files', 'Illuminate\Filesystem\Filesystem');
+
+		$this->app->bindIf('config', function ($app) {
+			$fileloader = new FileLoader($app['files'], __DIR__.'/../config');
+
+			return new Repository($fileloader, 'config');
+		}, true);
+
+		$this->app->config->package('anahkiasen/janitor', __DIR__.'/../config');
+	}
+
+	/**
+	 * Register Janitor services
+	 */
+	protected function registerJanitorClasses()
+	{
 		$this->app->singleton('Janitor\Codebase', function ($app) {
 			$codebase = new Codebase($app['path'], $app['config']->get('janitor::ignored'));
 			if ($app->bound('router')) {
@@ -28,10 +59,5 @@ class JanitorServiceProvider extends ServiceProvider
 
 			return $codebase;
 		});
-
-		$this->commands(array(
-			'Janitor\Commands\CleanViews',
-			'Janitor\Commands\CleanRoutes',
-		));
 	}
 }

@@ -59,7 +59,7 @@ class UsageNeedle
 	{
 		foreach ($this->needles as $needle) {
 			if ($this->regex) {
-				return preg_match($needle, $token);
+				return (bool) preg_match($needle, $token);
 			}
 
 			return strpos($token, $needle) !== false;

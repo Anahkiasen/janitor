@@ -1,7 +1,8 @@
 <?php
-namespace Janitor;
+namespace Janitor\TestCases;
 
 use Illuminate\Container\Container;
+use Janitor\JanitorServiceProvider;
 use PHPUnit_Framework_TestCase;
 
 class JanitorTestCase extends PHPUnit_Framework_TestCase
