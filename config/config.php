@@ -4,8 +4,8 @@
 	// Any files found matching these patterns will be
 	// marked as used by Janitor
 	'ignored' => array(
-		// "some/folder/*",
-		// "[a-z]+"
+		// "some/folder",
+		// "some-file.twig",
 	),
 
 );

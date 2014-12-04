@@ -13,11 +13,11 @@ class JanitorServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
-		$this->package('anahkiasen/janitor', __DIR__.'/../config');
+		$this->app->config->package('anahkiasen/janitor', __DIR__.'/../config');
 
 		// Define codebase
 		$this->app->singleton('Janitor\Entities\Codebase', function ($app) {
-			return new Codebase($app['path'], $app['config']['janitor::ignored']);
+			return new Codebase($app['path'], $app['config']->get('janitor::ignored'));
 		});
 
 		$this->commands(array(

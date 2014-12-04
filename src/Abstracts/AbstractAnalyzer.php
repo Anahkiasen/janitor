@@ -53,8 +53,7 @@ abstract class AbstractAnalyzer
 
 		// Set ignored patterns
 		foreach ($this->codebase->getIgnored() as $pattern) {
-			var_dump($pattern);
-			$finder = $finder->notName($pattern);
+			$finder = $finder->notPath($pattern)->notName($pattern);
 		}
 
 		// Wrap into Collection

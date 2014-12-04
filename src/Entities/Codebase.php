@@ -49,7 +49,6 @@ class Codebase
 			->name('/\.(php|twig)$/')
 			->in($folder);
 
-		var_dump($ignored);
 		$this->ignored = $ignored;
 		$this->files   = iterator_to_array($files);
 	}
