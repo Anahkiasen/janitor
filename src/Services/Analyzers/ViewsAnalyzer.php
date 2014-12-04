@@ -9,7 +9,7 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
 	/**
 	 * Compute the entities from the information
-	 * that was passed to the analyzed
+	 * that was passed to the analyzer
 	 *
 	 * @return \Janitor\Abstracts\AbstractAnalyzedEntity[]
 	 */
