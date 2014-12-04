@@ -15,9 +15,15 @@ class CleanViews extends Command
 	protected $name = 'janitor:views';
 
 	/**
+	 * @type string
+	 */
+	protected $description = 'Look for unused views';
+
+	/**
 	 * @type ViewsAnalyzer
 	 */
 	protected $analyzer;
+
 	/**
 	 * @type Filesystem
 	 */
@@ -25,6 +31,7 @@ class CleanViews extends Command
 
 	/**
 	 * @param ViewsAnalyzer $analyzer
+	 * @param Filesystem    $files
 	 */
 	public function __construct(ViewsAnalyzer $analyzer, Filesystem $files)
 	{
