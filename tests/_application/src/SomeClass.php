@@ -3,6 +3,6 @@ class SomeClass
 {
 	public function index()
 	{
-		return 'some-view';
+		return 'index';
 	}
 }
