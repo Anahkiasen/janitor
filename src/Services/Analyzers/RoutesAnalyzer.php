@@ -11,7 +11,7 @@ class RoutesAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	 */
 	public function analyze()
 	{
-		$routes = $this->codebase->getRoutes();
+		$routes   = $this->codebase->getRoutes();
 		$codebase = $this->codebase->getTokenized();
 
 		foreach ($routes as $route) {

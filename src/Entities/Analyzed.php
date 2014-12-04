@@ -22,6 +22,10 @@ class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterfac
 	public $name;
 
 	/**
+	 * The usage certainty:
+	 * 0: certainly unused
+	 * 1: certainly used
+	 *
 	 * @type integer
 	 */
 	public $usage = 0;

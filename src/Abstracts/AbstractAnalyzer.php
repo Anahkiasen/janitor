@@ -16,9 +16,8 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * The existing views
-
 	 *
-*@type Collection|Analyzed[]
+	 * @type Collection|Analyzed[]
 	 */
 	protected $files;
 
@@ -66,9 +65,8 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * Get all analyzed files
-
 	 *
-*@return Collection|Analyzed[]
+	 * @return Collection|Analyzed[]
 	 */
 	public function getFiles()
 	{
@@ -77,12 +75,10 @@ abstract class AbstractAnalyzer
 
 	/**
 	 * Get analyzed files unused by a certain threshold
-
 	 *
-*@param integer $threshold
-
+	 * @param integer $threshold
 	 *
-*@return Collection|Analyzed[]
+	 * @return Collection|Analyzed[]
 	 */
 	public function getUnusedFiles($threshold = 0)
 	{
