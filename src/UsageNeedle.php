@@ -57,7 +57,7 @@ class UsageNeedle
 	 */
 	public function matches($token)
 	{
-		foreach ($this->needles as $needle) {
+		foreach ((array) $this->needles as $needle) {
 			if ($this->regex) {
 				return (bool) preg_match($needle, $token);
 			}

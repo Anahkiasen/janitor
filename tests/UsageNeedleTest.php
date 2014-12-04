@@ -15,7 +15,7 @@ class UsageNeedleTest extends JanitorTestCase
 
 	public function testCanMatchRegexAgainstTokens()
 	{
-		$usageNeedle = new UsageNeedle(1, ['/f[a-z]{2}/'], true);
+		$usageNeedle = new UsageNeedle(1, '/f[a-z]{2}/', true);
 
 		$this->assertTrue($usageNeedle->matches('foobaz'));
 		$this->assertFalse($usageNeedle->matches('bazqux'));

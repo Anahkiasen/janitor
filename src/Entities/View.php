@@ -48,7 +48,7 @@ class View extends AbstractAnalyzedFile
 	/**
 	 * @param string $name
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	protected function computeNames($name)
 	{
