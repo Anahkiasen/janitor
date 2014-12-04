@@ -1,6 +1,6 @@
 # Janitor
 
-Janitor is a tool to help you remove unused code, views and assets from your codebase.
+Janitor is a tool to help you remove unused code, routes, views and assets from your codebase.
 
 ## Install
 
@@ -35,7 +35,7 @@ Janitor can also be used programmatically, in order to do so:
 // Define your codebase
 $codebase = new Janitor\Entities\Codebase('app');
 
-// Create an instance of any of Janitor's classes analyzer classes
+// Create an instance of any of Janitor's analyzer classes
 $analyzer = new Janitor\Services\Analyzers\ViewsAnalyzer($codebase);
 
 // Tell it which files you wish to analyze, and run the process
