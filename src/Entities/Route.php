@@ -1,6 +1,7 @@
 <?php
 namespace Janitor\Entities;
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Route as RouteInstance;
 use Janitor\Abstracts\AbstractAnalyzedEntity;
 use Janitor\UsageNeedle;
@@ -27,8 +28,12 @@ class Route extends AbstractAnalyzedEntity
 	/**
 	 * @param RouteInstance $route
 	 */
-	public function setRoute($route)
+	public function setRoute(RouteInstance $route)
 	{
+		// Compile route
+		$request = new Request();
+		$route->matches($request);
+
 		$this->route = $route;
 	}
 
@@ -46,7 +51,7 @@ class Route extends AbstractAnalyzedEntity
 		return array(
 			new UsageNeedle(1, $this->route->getActionName()),
 			new UsageNeedle(0.5, $this->route->getName()),
-			new UsageNeedle(0.25, $this->route->getUri()),
+			new UsageNeedle(0.25, $this->route->getCompiled()->getRegex()),
 		);
 	}
 }
