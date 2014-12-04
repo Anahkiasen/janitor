@@ -190,7 +190,7 @@ abstract class AbstractAnalyzer
 	protected function containsTokens(array $tokens, UsageNeedle $usageNeedle)
 	{
 		foreach ($tokens as $token) {
-			foreach ($usageNeedle->needles as $needle) {
+			foreach ((array) $usageNeedle->needles as $needle) {
 				if ($needle != '' && strpos($token, $needle) !== false) {
 					return true;
 				}
