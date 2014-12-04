@@ -8,7 +8,7 @@ class CodebaseTest extends JanitorTestCase
 	public function testCanFindFilesInCodebase()
 	{
 		$files    = $this->codebase->getFiles();
-		$file     = head($files);
+		$file     = $files[$this->appPath.'/src/SomeClass.php'];
 
 		$this->assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $file);
 		$this->assertEquals('src/SomeClass.php', $file->getRelativePathname());
