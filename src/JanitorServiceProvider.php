@@ -4,6 +4,11 @@ namespace Janitor;
 use Illuminate\Support\ServiceProvider;
 use Janitor\Entities\Codebase;
 
+// Define DS
+if (!defined('DS')) {
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 class JanitorServiceProvider extends ServiceProvider
 {
 	/**
