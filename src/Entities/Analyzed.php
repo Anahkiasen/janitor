@@ -4,16 +4,19 @@ namespace Janitor\Entities;
 use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\JsonableInterface;
 use JsonSerializable;
-use Symfony\Component\Finder\SplFileInfo;
 
 class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterface
 {
 	/**
+	 * The root path where analyzed entities reside
+	 *
 	 * @type string
 	 */
 	public $root;
 
 	/**
+	 * The base name of the analyzed entity
+	 *
 	 * @type string
 	 */
 	public $name;
@@ -24,20 +27,13 @@ class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterfac
 	public $usage = 0;
 
 	/**
-	 * @type SplFileInfo
+	 * @param string $root
+	 * @param string $name
 	 */
-	public $file;
-
-	/**
-	 * @param SplFileInfo $file
-	 * @param string      $root
-	 */
-	public function __construct(SplFileInfo $file, $root = null)
+	public function __construct($root, $name)
 	{
-		$this->file = $file;
+		$this->name = $name;
 		$this->root = $root;
-
-		$this->name = str_replace($this->root.DS, null, $this->file->getPathname());
 	}
 
 	//////////////////////////////////////////////////////////////////////

@@ -18,8 +18,11 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 		parent::setFiles($folder, $extensions);
 
 		// Create View instances
-		foreach ($this->files as $key => $view) {
-			$this->files[$key] = new View($view, $folder);
+		foreach ($this->files as $key => $file) {
+			$view = new View($folder, $file->getPathname());
+			$view->setFile($file);
+
+			$this->files[$key] = $view;
 		}
 	}
 

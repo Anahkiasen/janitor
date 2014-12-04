@@ -1,9 +1,7 @@
 <?php
 namespace Janitor\Entities;
 
-use Illuminate\Support\Fluent;
-
-class View extends Analyzed
+class View extends File
 {
 	/**
 	 * @type string[]
