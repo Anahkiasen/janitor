@@ -5,7 +5,7 @@ use Illuminate\Container\Container;
 use Janitor\JanitorServiceProvider;
 use PHPUnit_Framework_TestCase;
 
-class JanitorTestCase extends PHPUnit_Framework_TestCase
+abstract class JanitorTestCase extends PHPUnit_Framework_TestCase
 {
 	/**
 	 * @type Container
