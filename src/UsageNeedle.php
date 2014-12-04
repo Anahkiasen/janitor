@@ -18,16 +18,18 @@ class UsageNeedle
 	 *
 	 * @type boolean
 	 */
-	protected $regex = false;
+	protected $regex;
 
 	/**
 	 * @param integer $usage
 	 * @param string  $needles
+	 * @param boolean $regex
 	 */
-	public function __construct($usage, $needles)
+	public function __construct($usage, $needles, $regex = false)
 	{
 		$this->usage   = $usage;
 		$this->needles = $needles;
+		$this->regex   = $regex;
 	}
 
 	/**
