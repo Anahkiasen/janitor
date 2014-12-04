@@ -17,7 +17,7 @@ class PhpTokenizer implements TokenizerInterface
 		// Extract all string tokens
 		$tokens = token_get_all($file);
 		$tokens = array_filter($tokens, function ($token) {
-			return is_array($token) && T_CONSTANT_ENCAPSED_STRING === $token[0];
+			return is_array($token) && $token[0] === T_CONSTANT_ENCAPSED_STRING;
 		});
 
 		// Unwrap array and strings
