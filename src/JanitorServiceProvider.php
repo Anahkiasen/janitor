@@ -17,11 +17,17 @@ class JanitorServiceProvider extends ServiceProvider
 
 		// Define codebase
 		$this->app->singleton('Janitor\Entities\Codebase', function ($app) {
-			return new Codebase($app['path'], $app['config']->get('janitor::ignored'));
+			$codebase = new Codebase($app['path'], $app['config']->get('janitor::ignored'));
+			if ($app->bound('router')) {
+				$codebase->setRoutes($app['router']->getRoutes());
+			}
+
+			return $codebase;
 		});
 
 		$this->commands(array(
 			'Janitor\Commands\CleanViews',
+			'Janitor\Commands\CleanRoutes',
 		));
 	}
 }

@@ -27,7 +27,7 @@ class CleanViews extends Command
 	/**
 	 * @type Filesystem
 	 */
-	private $files;
+	protected $files;
 
 	/**
 	 * @param ViewsAnalyzer $analyzer

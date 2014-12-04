@@ -6,6 +6,7 @@ use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Illuminate\Routing\RouteCollection;
 
 /**
  * The user's codebase
@@ -20,6 +21,11 @@ class Codebase
 	 * @type SplFileInfo[]
 	 */
 	protected $files = [];
+
+	/**
+	 * @type RouteCollection
+	 */
+	protected $routes;
 
 	/**
 	 * The files to ignore
@@ -51,6 +57,26 @@ class Codebase
 
 		$this->ignored = $ignored;
 		$this->files   = iterator_to_array($files);
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// OPTIONS ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * @return RouteCollection
+	 */
+	public function getRoutes()
+	{
+		return $this->routes;
+	}
+
+	/**
+	 * @param RouteCollection $routes
+	 */
+	public function setRoutes($routes)
+	{
+		$this->routes = $routes;
 	}
 
 	/**
