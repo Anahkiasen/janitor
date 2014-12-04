@@ -36,5 +36,10 @@
       "Janitor\\": "tests"
     }
   },
+  "extra": {
+    "branch-alias": {
+      "dev-develop": "0.1-dev"
+    }
+  },
   "minimum-stability": "stable"
 }
