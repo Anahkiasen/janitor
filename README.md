@@ -5,7 +5,7 @@
 [![Total Downloads](http://img.shields.io/packagist/dt/anahkiasen/janitor.svg?style=flat)](https://packagist.org/packages/anahkiasen/janitor)
 [![Scrutinizer Quality Score](http://img.shields.io/scrutinizer/g/Anahkiasen/janitor.svg?style=flat)](https://scrutinizer-ci.com/g/Anahkiasen/janitor/)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/Anahkiasen/janitor.svg?style=flat)](https://scrutinizer-ci.com/g/Anahkiasen/janitor/)
-[![Dependency Status](https://www.versioneye.com/user/projects/53f1c65f13bb0677b1000744/badge.svg?style=flat)](https://www.versioneye.com/user/projects/53f1c65f13bb0677b1000744)
+[![Dependency Status](https://www.versioneye.com/user/projects/5480ddb78674a4feca00031a/badge.svg?style=flat)](https://www.versioneye.com/user/projects/5480ddb78674a4feca00031a)
 [![Support via Gittip](http://img.shields.io/gittip/Anahkiasen.svg?style=flat)](https://www.gittip.com/Anahkiasen/)
 
 Janitor is a tool to help you remove unused code, routes, views and assets from your codebase.
