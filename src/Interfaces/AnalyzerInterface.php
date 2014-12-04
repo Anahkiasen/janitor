@@ -10,6 +10,8 @@ interface AnalyzerInterface
 	 *
 	 * @param string $folder
 	 * @param string $extensions
+	 *
+	 * @return void
 	 */
 	public function setFiles($folder, $extensions);
 
@@ -22,6 +24,8 @@ interface AnalyzerInterface
 
 	/**
 	 * Run the analyze process
+	 *
+	 * @return Collection
 	 */
 	public function analyze();
 }

@@ -46,7 +46,7 @@ class View extends AbstractAnalyzedFile
 	//////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @param $name
+	 * @param string $name
 	 *
 	 * @return array
 	 */

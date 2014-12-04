@@ -9,7 +9,7 @@ class UsageNeedle
 	public $usage;
 
 	/**
-	 * @type string[]
+	 * @type string|string[]
 	 */
 	public $needles;
 
@@ -64,5 +64,7 @@ class UsageNeedle
 
 			return strpos($token, $needle) !== false;
 		}
+
+		return false;
 	}
 }

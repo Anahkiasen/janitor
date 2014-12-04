@@ -110,13 +110,14 @@ abstract class AbstractAnalyzer
 	/**
 	 * Setup the files to analyze
 	 *
-	 * @param string $folder
-	 * @param string $extensions
+	 * @param string          $folder
+	 * @param string|string[] $extensions
 	 */
 	public function setFiles($folder, $extensions)
 	{
 		// Create Finder
 		$finder     = new Finder();
+		$extensions = (array) $extensions;
 		$extensions = implode('|', $extensions);
 		$finder     = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
 

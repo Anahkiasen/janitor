@@ -44,8 +44,8 @@ class Codebase
 	/**
 	 * Build a new codebase
 	 *
-	 * @param string $folder Where the codebase resides
-	 * @param array  $ignored
+	 * @param string|null $folder Where the codebase resides
+	 * @param array       $ignored
 	 */
 	public function __construct($folder = null, $ignored = [])
 	{
@@ -102,7 +102,7 @@ class Codebase
 	/**
 	 * Get a serialized version of the codebase
 	 *
-	 * @return string[]
+	 * @return string[][]
 	 */
 	public function getTokenized()
 	{
