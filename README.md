@@ -33,7 +33,7 @@ Janitor can also be used programmatically, in order to do so:
 ```php
 <?php
 // Define your codebase
-$codebase = new Janitor\Entities\Codebase('app');
+$codebase = new Janitor\Codebase('app');
 
 // Create an instance of any of Janitor's analyzer classes
 $analyzer = new Janitor\Services\Analyzers\ViewsAnalyzer($codebase);

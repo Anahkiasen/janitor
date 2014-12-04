@@ -1,12 +1,12 @@
 <?php
-namespace Janitor\Entities;
+namespace Janitor;
 
+use Illuminate\Routing\RouteCollection;
 use Janitor\Services\Tokenizers\DefaultTokenizer;
 use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use Illuminate\Routing\RouteCollection;
 
 /**
  * The user's codebase
