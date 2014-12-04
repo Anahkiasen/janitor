@@ -46,18 +46,8 @@ class CleanViews extends Command
 	 */
 	public function fire()
 	{
-		$views = $this->laravel['config']['view.paths'][0];
-
-		// Setup analyzer
-		$this->analyzer->setOutput($this->output);
-		$this->analyzer->setFiles($views, ['php', 'twig']);
-		$this->analyzer->analyze();
-
-		// Get unused views
-		$unused = $this->analyzer->getFiles();
-		$unused = $unused->filter(function ($view) {
-			return $view->usage === 0;
-		});
+		$views  = $this->laravel['config']['view.paths'][0];
+		$unused = $this->getUnusedViews($views);
 
 		// Display unused views
 		$this->comment($unused->count().' unused views were found:');
@@ -85,5 +75,32 @@ class CleanViews extends Command
 		return array(
 			['delete', null, InputOption::VALUE_NONE, 'Delete the unused views found'],
 		);
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// HELPERS ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Get the unused views
+	 *
+	 * @param string $views
+	 *
+	 * @return \Illuminate\Support\Collection|\Janitor\Entities\AnalyzedFile[]
+	 */
+	protected function getUnusedViews($views)
+	{
+		// Setup analyzer
+		$this->analyzer->setOutput($this->output);
+		$this->analyzer->setFiles($views, ['php', 'twig']);
+		$this->analyzer->analyze();
+
+		// Get unused views
+		$unused = $this->analyzer->getFiles();
+		$unused = $unused->filter(function ($view) {
+			return $view->usage === 0;
+		});
+
+		return $unused;
 	}
 }
