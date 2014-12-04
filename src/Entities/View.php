@@ -1,79 +1,47 @@
 <?php
 namespace Janitor\Entities;
 
-class View extends File
-{
-	/**
-	 * @type string[]
-	 */
-	protected $usageNeedles;
+use Janitor\Abstracts\AbstractAnalyzedFile;
+use Janitor\UsageNeedle;
 
+class View extends AbstractAnalyzedFile
+{
 	/**
 	 * Get the possible occurences of the view's name and
 	 * their usage score
 	 *
 	 * @return string[]
 	 */
-	public function getUsageNeedles()
+	public function getUsageMatrix()
 	{
-		if (!$this->usageNeedles) {
+		if (!$this->usageMatrix) {
 			$extension = '.'.$this->file->getExtension();
 			$needles   = array(
-				['usage' => 1, 'needles' => $this->file->getPathname()],
-				['usage' => 0.5, 'needles' => $this->file->getBasename()],
-				['usage' => 0.25, 'needles' => $this->getNonumeralName($this->file->getBasename($extension))],
-				['usage' => 0.1, 'needles' => $this->getUnlocalizedName($this->file->getBasename($extension))],
+				new UsageNeedle(1, $this->file->getPathname()),
+				new UsageNeedle(0.5, $this->file->getBasename()),
+				new UsageNeedle(0.25, $this->getNonumeralName($this->file->getBasename($extension))),
+				new UsageNeedle(0.1, $this->getUnlocalizedName($this->file->getBasename($extension))),
 			);
 
-			$this->usageNeedles = array_map([$this, 'sanitizeNeedles'], $needles);
+			$this->usageMatrix = array_map([$this, 'sanitizeNeedles'], $needles);
 		}
 
-		return $this->usageNeedles;
+		return $this->usageMatrix;
 	}
 
 	/**
 	 * Sanitize the various needles
 	 *
-	 * @param array $needle
+	 * @param UsageNeedle $usageNeedle
 	 *
-	 * @return array
+	 * @return UsageNeedle
 	 */
-	public function sanitizeNeedles(array $needle)
+	public function sanitizeNeedles(UsageNeedle $usageNeedle)
 	{
-		$needle['needles'] = $this->computeNames($needle['needles']);
-		$needle['needles'] = array_unique($needle['needles']);
+		$usageNeedle->needles = $this->computeNames($usageNeedle->needles);
+		$usageNeedle->needles = array_unique($usageNeedle->needles);
 
-		return $needle;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getPattern()
-	{
-		$pattern = [];
-		foreach ($this->getUsageNeedles() as $needle) {
-			$pattern = array_merge($pattern, $needle['needles']);
-		}
-
-		$pattern = array_unique($pattern);
-		$pattern = implode('|', $pattern);
-
-		return $pattern;
-	}
-
-	/**
-	 * Convert the Fluent instance to an array.
-	 *
-	 * @return array
-	 */
-	public function toArray()
-	{
-		$view            = parent::toArray();
-		$view['needles'] = $this->getUsageNeedles();
-		$view['pattern'] = $this->getPattern();
-
-		return $view;
+		return $usageNeedle;
 	}
 
 	//////////////////////////////////////////////////////////////////////

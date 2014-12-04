@@ -1,11 +1,11 @@
 <?php
-namespace Janitor\Entities;
+namespace Janitor\Abstracts;
 
 use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\JsonableInterface;
 use JsonSerializable;
 
-class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterface
+abstract class AbstractAnalyzedEntity implements ArrayableInterface, JsonSerializable, JsonableInterface
 {
 	/**
 	 * The root path where analyzed entities reside
@@ -31,6 +31,14 @@ class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterfac
 	public $usage = 0;
 
 	/**
+	 * An array defining patterns to look for
+	 * and the usage certainty they bring
+	 *
+	 * @type string[]
+	 */
+	protected $usageMatrix;
+
+	/**
 	 * @param string $root
 	 * @param string $name
 	 */
@@ -38,6 +46,39 @@ class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterfac
 	{
 		$this->name = $name;
 		$this->root = $root;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	/////////////////////////////// USAGE ////////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Compute the usage matrix of the analyzed entity
+	 */
+	abstract public function getUsageMatrix();
+
+	/**
+	 * Return a string pattern concatenating
+	 * all the usage patterns associated with the
+	 * analyzed entity
+	 *
+	 * @return string
+	 */
+	public function getUsagePattern()
+	{
+		$pattern = [];
+		$matrix = $this->getUsageMatrix();
+
+		// Merge needles
+		foreach ($matrix as $needle) {
+			$pattern = array_merge($pattern, $needle['needles']);
+		}
+
+		// Transform into string
+		$pattern = array_unique($pattern);
+		$pattern = implode('|', $pattern);
+
+		return $pattern;
 	}
 
 	//////////////////////////////////////////////////////////////////////
@@ -52,9 +93,11 @@ class Analyzed implements ArrayableInterface, JsonSerializable, JsonableInterfac
 	public function toArray()
 	{
 		return array(
-			'root'  => $this->root,
-			'name'  => $this->name,
-			'usage' => $this->usage,
+			'root'          => $this->root,
+			'name'          => $this->name,
+			'usage'         => $this->usage,
+			'usage_matrix'  => $this->usageMatrix,
+			'usage_pattern' => $this->getUsagePattern(),
 		);
 	}
 

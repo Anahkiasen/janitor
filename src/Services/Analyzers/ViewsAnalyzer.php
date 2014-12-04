@@ -35,15 +35,16 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	{
 		$codebase = $this->codebase->getTokenized();
 
+		/** @type \Janitor\Entities\View $view */
 		foreach ($this->files as $key => $view) {
 			foreach ($codebase as $tokens) {
 				if (!$tokens) {
 					continue;
 				}
 
-				foreach ($view->getUsageNeedles() as $needle) {
-					if ($this->containsTokens($tokens, $needle['needles'])) {
-						$this->files[$key]->usage = $needle['usage'];
+				foreach ($view->getUsageMatrix() as $usageNeedle) {
+					if ($this->containsTokens($tokens, $usageNeedle)) {
+						$this->files[$key]->usage = $usageNeedle->usage;
 						break 2;
 					}
 				}

@@ -3,7 +3,7 @@ namespace Janitor\Abstracts;
 
 use Illuminate\Support\Collection;
 use Janitor\Codebase;
-use Janitor\Entities\Analyzed;
+use Janitor\UsageNeedle;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
@@ -17,7 +17,7 @@ abstract class AbstractAnalyzer
 	/**
 	 * The existing views
 	 *
-	 * @type Collection|Analyzed[]
+	 * @type Collection|AbstractAnalyzedEntity[]
 	 */
 	protected $files;
 
@@ -66,7 +66,7 @@ abstract class AbstractAnalyzer
 	/**
 	 * Get all analyzed files
 	 *
-	 * @return Collection|Analyzed[]
+	 * @return Collection|AbstractAnalyzedEntity[]
 	 */
 	public function getFiles()
 	{
@@ -78,12 +78,12 @@ abstract class AbstractAnalyzer
 	 *
 	 * @param integer $threshold
 	 *
-	 * @return Collection|Analyzed[]
+	 * @return Collection|AbstractAnalyzedEntity[]
 	 */
 	public function getUnusedFiles($threshold = 0)
 	{
 		$files = clone $this->files;
-		$files = $files->filter(function (Analyzed $file) use ($threshold) {
+		$files = $files->filter(function (AbstractAnalyzedEntity $file) use ($threshold) {
 			return $file->usage <= $threshold;
 		});
 
@@ -121,15 +121,15 @@ abstract class AbstractAnalyzer
 	/**
 	 * Check if multiple string appear in an array
 	 *
-	 * @param array $tokens
-	 * @param array $needles
+	 * @param array       $tokens
+	 * @param UsageNeedle $usageNeedle
 	 *
 	 * @return boolean
 	 */
-	protected function containsTokens(array $tokens, array $needles)
+	protected function containsTokens(array $tokens, UsageNeedle $usageNeedle)
 	{
 		foreach ($tokens as $token) {
-			foreach ($needles as $needle) {
+			foreach ($usageNeedle->needles as $needle) {
 				if ($needle != '' && strpos($token, $needle) !== false) {
 					return true;
 				}

@@ -1,7 +1,9 @@
 <?php
 namespace Janitor\Entities;
 
-class Route extends Analyzed
+use Janitor\Abstracts\AbstractAnalyzedEntity;
+
+class Route extends AbstractAnalyzedEntity
 {
 
 }

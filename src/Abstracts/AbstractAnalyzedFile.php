@@ -1,7 +1,9 @@
 <?php
-namespace Janitor\Entities;
+namespace Janitor\Abstracts;
 
-class File extends Analyzed
+use Janitor\Entities\SplFileInfo;
+
+abstract class AbstractAnalyzedFile extends AbstractAnalyzedEntity
 {
 	/**
 	 * The file containing the entity

@@ -43,7 +43,7 @@ $analyzer->setFiles('app/views');
 $files = $analyzer->analyze();
 ```
 
-Here, `$files` will be a Collection of instances of Analyzed.
+Here, `$files` will be a Collection of instances of AbstractAnalyzedEntity.
 Its most important property is the `usage` property, it's an integer whose value goes from 0 (file unused) to 1 (file used). The value can vary between these two points to indicate how certain Janitor is that the file is used.
 
 ```json
@@ -77,4 +77,4 @@ Please see [CONTRIBUTING](https://github.com/thephpleague/:package_name/blob/mas
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License (MIT). Please see [License AbstractAnalyzedFile](LICENSE.md) for more information.
