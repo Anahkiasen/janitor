@@ -22,7 +22,8 @@
 
 	<testsuites>
 		<testsuite name="Janitor Test Suite">
-			<directory suffix=".php">./tests/</directory>
+			<directory suffix=".php">tests</directory>
+			<exclude>tests/_application</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>
