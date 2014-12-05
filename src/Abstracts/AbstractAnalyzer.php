@@ -87,6 +87,14 @@ abstract class AbstractAnalyzer
 	}
 
 	/**
+	 * @param Collection|AbstractAnalyzedEntity[] $entities
+	 */
+	public function setEntities(Collection $entities)
+	{
+		$this->entities = $entities;
+	}
+
+	/**
 	 * Get analyzed entities unused by a certain threshold
 	 *
 	 * @param integer $threshold
@@ -95,12 +103,9 @@ abstract class AbstractAnalyzer
 	 */
 	public function getUnusedEntities($threshold = 0)
 	{
-		$entities = clone $this->entities;
-		$entities = $entities->filter(function (AbstractAnalyzedEntity $entity) use ($threshold) {
+		return $this->entities->filter(function (AbstractAnalyzedEntity $entity) use ($threshold) {
 			return $entity->usage <= $threshold;
 		});
-
-		return $entities;
 	}
 
 	//////////////////////////////////////////////////////////////////////
