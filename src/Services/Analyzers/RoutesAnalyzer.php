@@ -49,7 +49,7 @@ class RoutesAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	{
 		$entities = [];
 		if (!$this->routes) {
-			throw new UndefinedSubjectException;
+			throw new UndefinedSubjectException();
 		}
 
 		/** @type \Illuminate\Routing\Route $route */

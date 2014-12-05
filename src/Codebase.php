@@ -1,7 +1,7 @@
 <?php
 namespace Janitor;
 
-use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\Route;
 use Janitor\Services\Tokenizers\BladeTokenizer;
 use Janitor\Services\Tokenizers\DefaultTokenizer;
 use Janitor\Services\Tokenizers\JsonTokenizer;
@@ -27,7 +27,7 @@ class Codebase
 	protected $files = [];
 
 	/**
-	 * @type RouteCollection
+	 * @type Route[]
 	 */
 	protected $routes;
 
@@ -76,7 +76,7 @@ class Codebase
 	//////////////////////////////////////////////////////////////////////
 
 	/**
-	 * @return RouteCollection
+	 * @return Route[]
 	 */
 	public function getRoutes()
 	{
@@ -84,7 +84,7 @@ class Codebase
 	}
 
 	/**
-	 * @param RouteCollection $routes
+	 * @param Route[] $routes
 	 */
 	public function setRoutes($routes)
 	{

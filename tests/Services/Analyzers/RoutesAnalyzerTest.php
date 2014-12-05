@@ -2,7 +2,6 @@
 namespace Janitor\Services\Analyzers;
 
 use Janitor\TestCases\JanitorTestCase;
-use Mockery;
 
 class RoutesAnalyzerTest extends JanitorTestCase
 {

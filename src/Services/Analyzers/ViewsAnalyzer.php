@@ -18,7 +18,7 @@ class ViewsAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 	{
 		// Cancel if no files to analyze
 		if (!$this->files) {
-			throw new UndefinedSubjectException;
+			throw new UndefinedSubjectException();
 		}
 
 		$entities = [];

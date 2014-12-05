@@ -16,7 +16,6 @@ class JsonTokenizer extends PhpTokenizer
 		$file = json_decode($file, true);
 		$file = $this->toPhpFile($file);
 
-
 		return parent::tokenize($file);
 	}
 }

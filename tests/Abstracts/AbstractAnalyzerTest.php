@@ -33,7 +33,7 @@ class AbstractAnalyzerTest extends JanitorTestCase
 	 */
 	protected function mockAbstractEntity($usage)
 	{
-		$mocked = Mockery::mock('Janitor\Abstracts\AbstractAnalyzedEntity', ['name' => 'foo']);
+		$mocked        = Mockery::mock('Janitor\Abstracts\AbstractAnalyzedEntity', ['name' => 'foo']);
 		$mocked->usage = $usage;
 
 		return $mocked;

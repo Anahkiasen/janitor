@@ -4,7 +4,6 @@ namespace Janitor;
 use Illuminate\Config\FileLoader;
 use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
-use Janitor\Services\Analyzers\RoutesAnalyzer;
 
 // Define DS
 if (!defined('DS')) {

@@ -13,7 +13,7 @@ class AbstractTokenizer
 	/**
 	 * Transform a variable into a PHP file
 	 *
-	 * @param string $variable
+	 * @param array|string $variable
 	 *
 	 * @return string
 	 */
