@@ -15,7 +15,7 @@ class CleanRoutesTest extends JanitorTestCase
 			),
 		));
 
-		$tester = $this->testCommand('Janitor\Commands\CleanRoutes');
+		$tester = $this->getCommandTester('Janitor\Commands\CleanRoutes');
 
 		$this->assertContains('unused routes were found', $tester->getDisplay());
 	}

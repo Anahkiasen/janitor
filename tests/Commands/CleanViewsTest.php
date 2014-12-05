@@ -8,7 +8,7 @@ class CleanViewsTest extends JanitorTestCase
 {
 	public function testCanFindUnusedViews()
 	{
-		$tester = $this->testCommand('Janitor\Commands\CleanViews');
+		$tester = $this->getCommandTester('Janitor\Commands\CleanViews');
 
 		$this->assertContains('unused views were found', $tester->getDisplay());
 	}

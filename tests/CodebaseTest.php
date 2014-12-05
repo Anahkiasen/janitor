@@ -18,7 +18,7 @@ class CodebaseTest extends JanitorTestCase
 	{
 		$tokenized = $this->codebase->getTokenized();
 
-		$this->assertEquals([19 => 'index'], $tokenized['SomeClass.php']);
+		$this->assertEquals([20 => 'index'], $tokenized['SomeClass.php']);
 	}
 
 	public function testCanTokenizeJsonFiles()

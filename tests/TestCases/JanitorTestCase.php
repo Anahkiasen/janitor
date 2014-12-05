@@ -76,7 +76,7 @@ abstract class JanitorTestCase extends PHPUnit_Framework_TestCase
 	 *
 	 * @return CommandTester
 	 */
-	protected function testCommand($command)
+	protected function getCommandTester($command)
 	{
 		$command = $this->app->make($command);
 		$command->setLaravel($this->app);
