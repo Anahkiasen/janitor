@@ -11,6 +11,18 @@ class AbstractTokenizer
 	protected $ignored = [];
 
 	/**
+	 * Transform a variable into a PHP file
+	 *
+	 * @param string $variable
+	 *
+	 * @return string
+	 */
+	protected function toPhpFile($variable)
+	{
+		return '<?php'.PHP_EOL.var_export($variable, true).';';
+	}
+
+	/**
 	 * @param array $tokens
 	 *
 	 * @return array

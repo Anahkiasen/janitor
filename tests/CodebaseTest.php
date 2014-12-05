@@ -46,6 +46,13 @@ class CodebaseTest extends JanitorTestCase
 		$this->assertContains('Janitor Test Suite', $tokenized['phpunit.xml']);
 	}
 
+	public function testCanTokenizeYamlFiles()
+	{
+		$tokenized = $this->codebase->getTokenized();
+
+		$this->assertContains('SomeClass@index', $tokenized['config.yml']);
+	}
+
 	public function testCanTokenizeTwigFiles()
 	{
 		$tokenized = $this->codebase->getTokenized();

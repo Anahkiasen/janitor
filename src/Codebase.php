@@ -8,6 +8,7 @@ use Janitor\Services\Tokenizers\JsonTokenizer;
 use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
 use Janitor\Services\Tokenizers\XmlTokenizer;
+use Janitor\Services\Tokenizers\YamlTokenizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -55,7 +56,7 @@ class Codebase
 		$finder = new Finder();
 		$files  = $finder
 			->files()
-			->name('/\.(php|twig|json|xml)$/')
+			->name('/\.(php|twig|json|xml|yml|yaml)$/')
 			->in($folder);
 
 		$this->ignored = $ignored;
@@ -153,6 +154,11 @@ class Codebase
 
 			case 'json':
 				$tokenizer = new JsonTokenizer();
+				break;
+
+			case 'yml':
+			case 'yaml':
+				$tokenizer = new YamlTokenizer();
 				break;
 
 			case 'xml':
