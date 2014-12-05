@@ -56,7 +56,7 @@ class Codebase
 		$finder = new Finder();
 		$files  = $finder
 			->files()
-			->name('/\.(php|twig|json|xml|yml|yaml)$/')
+			->name('/\.(php|twig|json|xml|yml|yaml|md)$/')
 			->in($folder);
 
 		$this->ignored = $ignored;

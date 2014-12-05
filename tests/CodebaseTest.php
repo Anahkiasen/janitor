@@ -59,4 +59,11 @@ class CodebaseTest extends JanitorTestCase
 
 		$this->assertEquals(['some.layout', 'some/partial.twig'], $tokenized['index.twig']);
 	}
+
+	public function testCanFallbackToDefaultTokenizer()
+	{
+		$tokenized = $this->codebase->getTokenized();
+
+		$this->assertEquals(['To make stuff work, include `views/unused.twig`'.PHP_EOL], $tokenized['README.md']);
+	}
 }
