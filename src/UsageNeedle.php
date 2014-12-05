@@ -28,7 +28,7 @@ class UsageNeedle
 	public function __construct($usage, $needles, $regex = false)
 	{
 		$this->usage   = $usage;
-		$this->needles = $needles;
+		$this->needles = $this->unifyNeedles($needles);
 		$this->regex   = $regex;
 	}
 
@@ -57,10 +57,7 @@ class UsageNeedle
 	 */
 	public function matches($token)
 	{
-		$needles = (array) $this->needles;
-		$needles = array_filter($needles);
-
-		foreach ($needles as $needle) {
+		foreach ($this->needles as $needle) {
 			if ($this->regex) {
 				return (bool) preg_match($needle, $token);
 			}
@@ -120,5 +117,21 @@ class UsageNeedle
 		$this->usage -= ($distance * 0.1);
 
 		return true;
+	}
+
+	/**
+	 * Unify and sanitize the needles
+	 *
+	 * @param string|string[] $needles
+	 *
+	 * @return string[]
+	 */
+	protected function unifyNeedles($needles)
+	{
+		$needles = (array) $needles;
+		$needles = array_filter($needles);
+		$needles = array_unique($needles);
+
+		return $needles;
 	}
 }
