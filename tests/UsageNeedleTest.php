@@ -47,4 +47,10 @@ class UsageNeedleTest extends JanitorTestCase
 		$usageNeedle->matches('URL.action("Foo@bar")');
 		$this->assertEquals(0.8, $usageNeedle->usage);
 	}
+
+	public function testDoesntCrashOnLooseMatchOfLongerContent()
+	{
+		$usageNeedle = new UsageNeedle(1, 'URL::action("Foo@bar")');
+		$usageNeedle->matches(str_repeat('foo', 255));
+	}
 }

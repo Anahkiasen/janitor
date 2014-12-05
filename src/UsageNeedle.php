@@ -98,6 +98,10 @@ class UsageNeedle
 	 */
 	public function looselyMatches($token, $needle)
 	{
+		if (strlen($token) >= 255 || strlen($needle) >= 255) {
+			return false;
+		}
+
 		// Unify casing
 		$token  = strtolower($token);
 		$needle = strtolower($needle);
