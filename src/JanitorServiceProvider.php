@@ -1,6 +1,7 @@
 <?php
 namespace Janitor;
 
+use Illuminate\Cache\CacheManager;
 use Illuminate\Config\FileLoader;
 use Illuminate\Config\Repository;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +43,12 @@ class JanitorServiceProvider extends ServiceProvider
 
 			return new Repository($fileloader, 'config');
 		}, true);
+
+		$this->app->bindIf('cache', function ($app) {
+			return new CacheManager($app);
+		});
+
+		$this->app['cache']->set('foo', 'bar');
 
 		$this->app->config->package('anahkiasen/janitor', __DIR__.'/../config');
 	}
