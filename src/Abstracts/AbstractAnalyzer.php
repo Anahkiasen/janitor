@@ -5,6 +5,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Janitor\Codebase;
 use Janitor\UsageNeedle;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
@@ -173,6 +175,20 @@ abstract class AbstractAnalyzer
 		$this->output = $output;
 	}
 
+	/**
+	 * @param array $entries
+	 *
+	 * @return ProgressBar
+	 */
+	protected function getProgressBar(array $entries)
+	{
+		$progress = new ProgressBar($this->output ?: new NullOutput(), sizeof($entries));
+		$progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <info>%message%</info>');
+		$progress->start();
+
+		return $progress;
+	}
+
 	//////////////////////////////////////////////////////////////////////
 	////////////////////////////// ANALYZE ///////////////////////////////
 	//////////////////////////////////////////////////////////////////////
@@ -184,11 +200,18 @@ abstract class AbstractAnalyzer
 	 */
 	public function analyze()
 	{
+		$this->line('Tokenizing your codebase, this can take a few moments');
 		$this->entities = $this->filterEntities();
 		$codebase       = $this->codebase->getTokenized();
 
 		/** @type AbstractAnalyzedEntity $entity */
+		$this->line('Analyzing codebase...');
+		$progress = $this->getProgressBar($this->entities);
+
 		foreach ($this->entities as $key => $entity) {
+			$progress->advance();
+			$progress->setMessage($entity->name);
+
 			foreach ($entity->getUsageMatrix() as $usageNeedle) {
 				foreach ($codebase as $file => $tokens) {
 					if (!$tokens) {
@@ -207,6 +230,8 @@ abstract class AbstractAnalyzer
 				}
 			}
 		}
+
+		$progress->finish();
 
 		return $this->entities;
 	}
