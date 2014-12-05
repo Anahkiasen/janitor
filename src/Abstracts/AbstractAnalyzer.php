@@ -176,11 +176,11 @@ abstract class AbstractAnalyzer
 	}
 
 	/**
-	 * @param array $entries
+	 * @param array|Collection $entries
 	 *
 	 * @return ProgressBar
 	 */
-	protected function getProgressBar(array $entries)
+	protected function getProgressBar($entries)
 	{
 		$progress = new ProgressBar($this->output ?: new NullOutput(), sizeof($entries));
 		$progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <info>%message%</info>');

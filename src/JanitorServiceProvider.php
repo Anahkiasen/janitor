@@ -45,10 +45,11 @@ class JanitorServiceProvider extends ServiceProvider
 		}, true);
 
 		$this->app->bindIf('cache', function ($app) {
+			$app['config']['cache.driver'] = 'file';
+			$app['config']['cache.path'] = __DIR__.'/../cache';
+
 			return new CacheManager($app);
 		});
-
-		$this->app['cache']->set('foo', 'bar');
 
 		$this->app->config->package('anahkiasen/janitor', __DIR__.'/../config');
 	}
@@ -60,6 +61,9 @@ class JanitorServiceProvider extends ServiceProvider
 	{
 		$this->app->singleton('Janitor\Codebase', function ($app) {
 			$codebase = new Codebase($app['path'], $app['config']->get('janitor::ignored'));
+			$codebase->setCache($app['cache']);
+
+			// Bind router if available
 			if ($app->bound('router')) {
 				$codebase->setRoutes($app['router']->getRoutes());
 			}

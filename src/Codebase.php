@@ -32,6 +32,11 @@ class Codebase
 	protected $routes;
 
 	/**
+	 * @type \Illuminate\Cache\CacheManager
+	 */
+	protected $cache;
+
+	/**
 	 * The files to ignore
 	 *
 	 * @type string[]
@@ -92,6 +97,22 @@ class Codebase
 	}
 
 	/**
+	 * @return \Illuminate\Cache\CacheManager
+	 */
+	public function getCache()
+	{
+		return $this->cache;
+	}
+
+	/**
+	 * @param \Illuminate\Cache\CacheManager $cache
+	 */
+	public function setCache($cache)
+	{
+		$this->cache = $cache;
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public function getIgnored()
@@ -136,40 +157,45 @@ class Codebase
 	 */
 	protected function extractStringTokens(SplFileInfo $file)
 	{
-		// Get the contents of the file
-		$contents = $file->getContents();
+		// Fetch tokens from cache if available
+		$hash          = 'janitor.tokens.'.md5($file->getPathname()).'-'.$file->getMTime();
+		$computeTokens = function () use ($file) {
+			$contents = $file->getContents();
 
-		// See if we have an available Tokenizer
-		// and use it to extract the contents
-		switch ($file->getExtension()) {
-			case 'php':
-				$tokenizer = strpos($file->getBasename(), 'blade.php') !== false
-					? new BladeTokenizer()
-					: new PhpTokenizer();
-				break;
+			// See if we have an available Tokenizer
+			// and use it to extract the contents
+			switch ($file->getExtension()) {
+				case 'php':
+					$tokenizer = strpos($file->getBasename(), 'blade.php') !== false
+						? new BladeTokenizer()
+						: new PhpTokenizer();
+					break;
 
-			case 'twig':
-				$tokenizer = new TwigTokenizer();
-				break;
+				case 'twig':
+					$tokenizer = new TwigTokenizer();
+					break;
 
-			case 'json':
-				$tokenizer = new JsonTokenizer();
-				break;
+				case 'json':
+					$tokenizer = new JsonTokenizer();
+					break;
 
-			case 'yml':
-			case 'yaml':
-				$tokenizer = new YamlTokenizer();
-				break;
+				case 'yml':
+				case 'yaml':
+					$tokenizer = new YamlTokenizer();
+					break;
 
-			case 'xml':
-				$tokenizer = new XmlTokenizer();
-				break;
+				case 'xml':
+					$tokenizer = new XmlTokenizer();
+					break;
 
-			default:
-				$tokenizer = new DefaultTokenizer();
-				break;
-		}
+				default:
+					$tokenizer = new DefaultTokenizer();
+					break;
+			}
 
-		return $tokenizer->tokenize($contents);
+			return $tokenizer->tokenize($contents);
+		};
+
+		return $this->cache ? $this->cache->rememberForever($hash, $computeTokens) : $computeTokens();
 	}
 }
