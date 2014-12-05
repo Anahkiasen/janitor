@@ -1,6 +1,8 @@
 <?php
 namespace Janitor;
 
+use Illuminate\Cache\NullStore;
+use Illuminate\Cache\Repository;
 use Illuminate\Routing\Route;
 use Janitor\Services\Tokenizers\BladeTokenizer;
 use Janitor\Services\Tokenizers\DefaultTokenizer;
@@ -66,6 +68,7 @@ class Codebase
 
 		$this->ignored = $ignored;
 		$this->files   = iterator_to_array($files);
+		$this->cache   = new Repository(new NullStore());
 	}
 
 	/**
@@ -158,8 +161,9 @@ class Codebase
 	protected function extractStringTokens(SplFileInfo $file)
 	{
 		// Fetch tokens from cache if available
-		$hash          = 'janitor.tokens.'.md5($file->getPathname()).'-'.$file->getMTime();
-		$computeTokens = function () use ($file) {
+		$hash = 'janitor.tokens.'.md5($file->getPathname()).'-'.$file->getMTime();
+
+		return $this->cache->rememberForever($hash, function () use ($file) {
 			$contents = $file->getContents();
 
 			// See if we have an available Tokenizer
@@ -194,8 +198,6 @@ class Codebase
 			}
 
 			return $tokenizer->tokenize($contents);
-		};
-
-		return $this->cache ? $this->cache->rememberForever($hash, $computeTokens) : $computeTokens();
+		});
 	}
 }
