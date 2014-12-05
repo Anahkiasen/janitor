@@ -1,1 +1,1 @@
-To make stuff work, include `views/unused.twig`
+To make stuff work, include `views/foobar.twig`

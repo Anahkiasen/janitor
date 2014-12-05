@@ -64,6 +64,6 @@ class CodebaseTest extends JanitorTestCase
 	{
 		$tokenized = $this->codebase->getTokenized();
 
-		$this->assertEquals(['To make stuff work, include `views/unused.twig`'.PHP_EOL], $tokenized['README.md']);
+		$this->assertEquals(['To make stuff work, include `views/foobar.twig`'.PHP_EOL], $tokenized['README.md']);
 	}
 }

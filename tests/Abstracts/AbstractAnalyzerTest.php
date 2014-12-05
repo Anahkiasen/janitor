@@ -13,12 +13,17 @@ class AbstractAnalyzerTest extends JanitorTestCase
 		$analyzer = new ViewsAnalyzer($this->codebase);
 		$analyzer->setEntities(new Collection(array(
 			$this->mockAbstractEntity(1),
+			$this->mockAbstractEntity(0.5),
+			$this->mockAbstractEntity(0.25),
 			$this->mockAbstractEntity(0),
 		)));
 
-		$results = $analyzer->getUnusedEntities();
-		$this->assertCount(1, $results);
-		$this->assertEquals(0, $results->first()->usage);
+		$results = $analyzer->getUnusedEntities(0.25)->all();
+		$results = array_values($results);
+
+		$this->assertCount(2, $results);
+		$this->assertEquals(0, $results[1]->usage);
+		$this->assertEquals(0.25, $results[0]->usage);
 	}
 
 	/**
