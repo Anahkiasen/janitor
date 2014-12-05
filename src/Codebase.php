@@ -2,7 +2,9 @@
 namespace Janitor;
 
 use Illuminate\Routing\RouteCollection;
+use Janitor\Services\Tokenizers\BladeTokenizer;
 use Janitor\Services\Tokenizers\DefaultTokenizer;
+use Janitor\Services\Tokenizers\JsonTokenizer;
 use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
 use Symfony\Component\Finder\Finder;
@@ -52,7 +54,7 @@ class Codebase
 		$finder = new Finder();
 		$files  = $finder
 			->files()
-			->name('/\.(php|twig)$/')
+			->name('/\.(php|twig|json)$/')
 			->in($folder);
 
 		$this->ignored = $ignored;
@@ -139,11 +141,19 @@ class Codebase
 		// and use it to extract the contents
 		switch ($file->getExtension()) {
 			case 'php':
-				$tokenizer = new PhpTokenizer();
+				if (strpos($file->getBasename(), 'blade.php') !== false) {
+					$tokenizer = new BladeTokenizer();
+				} else {
+					$tokenizer = new PhpTokenizer();
+				}
 				break;
 
 			case 'twig':
 				$tokenizer = new TwigTokenizer();
+				break;
+
+			case 'json':
+				$tokenizer = new JsonTokenizer();
 				break;
 
 			default:

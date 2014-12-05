@@ -21,6 +21,22 @@ class CodebaseTest extends JanitorTestCase
 		$this->assertEquals([19 => 'index'], $tokenized['SomeClass.php']);
 	}
 
+	public function testCanTokenizeJsonFiles()
+	{
+		$tokenized = $this->codebase->getTokenized();
+
+		$this->assertEquals([7 => 'views', 19 => 'index'], $tokenized['something.json']);
+	}
+
+	public function testCanTokenizeBladeFiles()
+	{
+		$tokenized = $this->codebase->getTokenized();
+
+		$this->assertContains('app', $tokenized['show.blade.php']);
+		$this->assertContains('content', $tokenized['show.blade.php']);
+		$this->assertContains('some/partial', $tokenized['show.blade.php']);
+	}
+
 	public function testCanTokenizeTwigFiles()
 	{
 		$tokenized = $this->codebase->getTokenized();
