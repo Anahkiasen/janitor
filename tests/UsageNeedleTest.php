@@ -27,4 +27,24 @@ class UsageNeedleTest extends JanitorTestCase
 		$usageNeedle = new UsageNeedle(1, '');
 		$usageNeedle->matches('foobar');
 	}
+
+	public function testCanLooselyMatchContent()
+	{
+		$usageNeedle = new UsageNeedle(1, 'URL::action("Foo@bar")');
+
+		$this->assertTrue($usageNeedle->matches("URL.action('Foo@bar')"));
+		$this->assertTrue($usageNeedle->matches('$url->action("Foo@bar")'));
+		$this->assertFalse($usageNeedle->matches('URL::action("Bar@baz")'));
+	}
+
+	public function testLooseMatchAffectsUsageCertainty()
+	{
+		$usageNeedle = new UsageNeedle(1, 'URL::action("Foo@bar")');
+		$usageNeedle->matches('URL::action("Foo@bar")');
+		$this->assertEquals(1, $usageNeedle->usage);
+
+		$usageNeedle = new UsageNeedle(1, 'URL::action("Foo@bar")');
+		$usageNeedle->matches('URL.action("Foo@bar")');
+		$this->assertEquals(0.8, $usageNeedle->usage);
+	}
 }

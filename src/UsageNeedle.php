@@ -65,9 +65,56 @@ class UsageNeedle
 				return (bool) preg_match($needle, $token);
 			}
 
-			return strpos($token, $needle) !== false;
+			return $this->contains($token, $needle) || $this->looselyMatches($token, $needle);
 		}
 
 		return false;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// HELPERS ///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Check if a needle is contained in a token
+	 *
+	 * @param string $token
+	 * @param string $needle
+	 *
+	 * @return boolean
+	 */
+	public function contains($token, $needle)
+	{
+		return strpos($token, $needle) !== false;
+	}
+
+	/**
+	 * Check if a needle loosely matches a token
+	 *
+	 * @param string $token
+	 * @param string $needle
+	 *
+	 * @return boolean
+	 */
+	public function looselyMatches($token, $needle)
+	{
+		// Unify casing
+		$token  = strtolower($token);
+		$needle = strtolower($needle);
+
+		// Unify quotes
+		$token = str_replace('"', "'", $token);
+		$needle = str_replace('"', "'", $needle);
+
+		// Compute Levenshtein distance
+		$distance = levenshtein($needle, $token);
+		if ($distance > 3) {
+			return false;
+		}
+
+		// Affect usage
+		$this->usage -= ($distance * 0.1);
+
+		return true;
 	}
 }
