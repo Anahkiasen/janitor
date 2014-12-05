@@ -28,8 +28,17 @@ class UsageNeedle
 	public function __construct($usage, $needles, $regex = false)
 	{
 		$this->usage   = $usage;
-		$this->needles = $this->unifyNeedles($needles);
 		$this->regex   = $regex;
+
+		$this->setNeedles($needles);
+	}
+
+	/**
+	 * @param string|\string[] $needles
+	 */
+	public function setNeedles($needles)
+	{
+		$this->needles = $this->unifyNeedles($needles);
 	}
 
 	/**
