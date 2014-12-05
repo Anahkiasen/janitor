@@ -25,7 +25,7 @@ class CodebaseTest extends JanitorTestCase
 	{
 		$tokenized = $this->codebase->getTokenized();
 
-		$this->assertEquals([7 => 'views', 19 => 'index'], $tokenized['something.json']);
+		$this->assertEquals([5 => 'views', 17 => 'index'], $tokenized['something.json']);
 	}
 
 	public function testCanTokenizeBladeFiles()
@@ -43,7 +43,7 @@ class CodebaseTest extends JanitorTestCase
 	{
 		$tokenized = $this->codebase->getTokenized();
 
-		$this->assertContains('Janitor Test Suite', $tokenized['phpunit.xml']);
+		$this->assertContains('Janitor Test Suite', $tokenized['somefile.xml']);
 	}
 
 	public function testCanTokenizeYamlFiles()
