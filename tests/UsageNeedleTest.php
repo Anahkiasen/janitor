@@ -21,4 +21,10 @@ class UsageNeedleTest extends JanitorTestCase
 		$this->assertTrue($usageNeedle->matches('foobaz'));
 		$this->assertFalse($usageNeedle->matches('bazqux'));
 	}
+
+	public function testCanFilterEmptyNeedles()
+	{
+		$usageNeedle = new UsageNeedle(1, '');
+		$usageNeedle->matches('foobar');
+	}
 }
