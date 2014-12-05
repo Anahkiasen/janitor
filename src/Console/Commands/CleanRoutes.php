@@ -2,9 +2,10 @@
 namespace Janitor\Console\Commands;
 
 use Illuminate\Console\Command;
+use Janitor\Abstracts\Console\AbstractAnalyzerCommand;
 use Janitor\Services\Analyzers\RoutesAnalyzer;
 
-class CleanRoutes extends Command
+class CleanRoutes extends AbstractAnalyzerCommand
 {
 	/**
 	 * @type string
@@ -17,11 +18,6 @@ class CleanRoutes extends Command
 	protected $description = 'Look for unused routes';
 
 	/**
-	 * @type RoutesAnalyzer
-	 */
-	protected $analyzer;
-
-	/**
 	 * @param RoutesAnalyzer $analyzer
 	 */
 	public function __construct(RoutesAnalyzer $analyzer)
@@ -29,20 +25,5 @@ class CleanRoutes extends Command
 		parent::__construct();
 
 		$this->analyzer = $analyzer;
-	}
-
-	/**
-	 * Execute the command
-	 */
-	public function fire()
-	{
-		$this->analyzer->setOutput($this->output);
-		$this->analyzer->analyze();
-
-		$unused = $this->analyzer->getUnusedEntities();
-		$this->comment($unused->count().' unused routes were found:');
-		foreach ($unused as $entity) {
-			$this->line('| '.$entity->name);
-		}
 	}
 }

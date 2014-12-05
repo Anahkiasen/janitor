@@ -1,13 +1,13 @@
 <?php
 namespace Janitor\Console\Commands;
 
-use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Janitor\Abstracts\Console\AbstractAnalyzerCommand;
 use Janitor\Entities\View;
 use Janitor\Services\Analyzers\ViewsAnalyzer;
 use Symfony\Component\Console\Input\InputOption;
 
-class CleanViews extends Command
+class CleanViews extends AbstractAnalyzerCommand
 {
 	/**
 	 * @type string
@@ -18,11 +18,6 @@ class CleanViews extends Command
 	 * @type string
 	 */
 	protected $description = 'Look for unused views';
-
-	/**
-	 * @type ViewsAnalyzer
-	 */
-	protected $analyzer;
 
 	/**
 	 * @type Filesystem
@@ -46,18 +41,15 @@ class CleanViews extends Command
 	 */
 	public function fire()
 	{
-		$views  = $this->laravel['config']['view.paths'][0];
-		$unused = $this->getUnusedViews($views);
+		// Configure Analyzer
+		$views = $this->laravel['config']['view.paths'][0];
+		$this->analyzer->setFiles($views, ['php', 'twig']);
 
-		// Display unused views
-		$this->comment($unused->count().' unused views were found:');
-		foreach ($unused as $entity) {
-			$this->line('| '.$entity->name);
-		}
+		parent::fire();
 
 		// Remove if asked
 		if ($this->option('delete')) {
-			$unused = $unused->map(function (View $view) {
+			$unused = $this->results->map(function (View $view) {
 				return realpath($view->file->getPathname());
 			});
 
@@ -72,33 +64,8 @@ class CleanViews extends Command
 	 */
 	public function getOptions()
 	{
-		return array(
+		return array_merge(parent::getOptions(), array(
 			['delete', null, InputOption::VALUE_NONE, 'Delete the unused views found'],
-			['threshold', 'T', InputOption::VALUE_REQUIRED, 'The usage threshold to use'],
-		);
-	}
-
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// HELPERS ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
-
-	/**
-	 * Get the unused views
-	 *
-	 * @param string $views
-	 *
-	 * @return \Illuminate\Support\Collection|\Janitor\Abstracts\AbstractAnalyzedEntity[]
-	 */
-	protected function getUnusedViews($views)
-	{
-		$threshold = $this->option('threshold');
-		$threshold = is_null($threshold) ? 0 : $threshold;
-
-		// Setup analyzer
-		$this->analyzer->setOutput($this->output);
-		$this->analyzer->setFiles($views, ['php', 'twig']);
-		$this->analyzer->analyze();
-
-		return $this->analyzer->getUnusedEntities($threshold);
+		));
 	}
 }
