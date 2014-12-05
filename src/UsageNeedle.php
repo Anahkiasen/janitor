@@ -21,6 +21,13 @@ class UsageNeedle
 	protected $regex;
 
 	/**
+	 * Enable loose matching
+	 *
+	 * @type boolean
+	 */
+	protected $loose = false;
+
+	/**
 	 * @param integer $usage
 	 * @param string  $needles
 	 * @param boolean $regex
@@ -32,6 +39,10 @@ class UsageNeedle
 
 		$this->setNeedles($needles);
 	}
+
+	//////////////////////////////////////////////////////////////////////
+	/////////////////////////////// OPTIONS //////////////////////////////
+	//////////////////////////////////////////////////////////////////////
 
 	/**
 	 * @param string|\string[] $needles
@@ -58,6 +69,26 @@ class UsageNeedle
 	}
 
 	/**
+	 * @return boolean
+	 */
+	public function isLoose()
+	{
+		return $this->loose;
+	}
+
+	/**
+	 * @param boolean $loose
+	 */
+	public function setLoose($loose)
+	{
+		$this->loose = $loose;
+	}
+
+	//////////////////////////////////////////////////////////////////////
+	////////////////////////////// MATCHING///////////////////////////////
+	//////////////////////////////////////////////////////////////////////
+
+	/**
 	 * Check if the usage needle
 	 *
 	 * @param $token
@@ -76,10 +107,6 @@ class UsageNeedle
 
 		return false;
 	}
-
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// HELPERS ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Check if a needle is contained in a token
@@ -104,7 +131,7 @@ class UsageNeedle
 	 */
 	public function looselyMatches($token, $needle)
 	{
-		if (strlen($token) >= 255 || strlen($needle) >= 255) {
+		if (!$this->loose || strlen($token) >= 255 || strlen($needle) >= 255) {
 			return false;
 		}
 
