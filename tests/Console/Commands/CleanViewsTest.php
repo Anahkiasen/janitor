@@ -1,14 +1,13 @@
 <?php
-namespace Janitor\Commands;
+namespace Janitor\Console\Commands;
 
 use Janitor\TestCases\JanitorTestCase;
-use Symfony\Component\Console\Tester\CommandTester;
 
 class CleanViewsTest extends JanitorTestCase
 {
 	public function testCanFindUnusedViews()
 	{
-		$tester = $this->getCommandTester('Janitor\Commands\CleanViews');
+		$tester = $this->getCommandTester('Janitor\Console\Commands\CleanViews');
 
 		$this->assertContains('unused views were found', $tester->getDisplay());
 	}

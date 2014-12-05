@@ -25,8 +25,8 @@ class JanitorServiceProvider extends ServiceProvider
 
 		if ($this->app->bound('artisan')) {
 			$this->commands(array(
-				'Janitor\Commands\CleanViews',
-				'Janitor\Commands\CleanRoutes',
+				'Janitor\Console\Commands\CleanViews',
+				'Janitor\Console\Commands\CleanRoutes',
 			));
 		}
 	}

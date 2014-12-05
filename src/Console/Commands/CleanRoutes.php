@@ -1,5 +1,5 @@
 <?php
-namespace Janitor\Commands;
+namespace Janitor\Console\Commands;
 
 use Illuminate\Console\Command;
 use Janitor\Services\Analyzers\RoutesAnalyzer;

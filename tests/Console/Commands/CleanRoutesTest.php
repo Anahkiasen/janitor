@@ -1,5 +1,5 @@
 <?php
-namespace Janitor\Commands;
+namespace Janitor\Console\Commands;
 
 use Janitor\TestCases\JanitorTestCase;
 use Mockery;
@@ -15,7 +15,7 @@ class CleanRoutesTest extends JanitorTestCase
 			),
 		));
 
-		$tester = $this->getCommandTester('Janitor\Commands\CleanRoutes');
+		$tester = $this->getCommandTester('Janitor\Console\Commands\CleanRoutes');
 
 		$this->assertContains('unused routes were found', $tester->getDisplay());
 	}
