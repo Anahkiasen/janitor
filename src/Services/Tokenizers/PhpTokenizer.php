@@ -1,9 +1,10 @@
 <?php
 namespace Janitor\Services\Tokenizers;
 
+use Janitor\Abstracts\AbstractTokenizer;
 use Janitor\Interfaces\TokenizerInterface;
 
-class PhpTokenizer implements TokenizerInterface
+class PhpTokenizer extends AbstractTokenizer implements TokenizerInterface
 {
 	/**
 	 * Tokenize a file
@@ -25,6 +26,6 @@ class PhpTokenizer implements TokenizerInterface
 			return trim($token[1], "'");
 		}, $tokens);
 
-		return $tokens;
+		return $this->filterTokens($tokens);
 	}
 }

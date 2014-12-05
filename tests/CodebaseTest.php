@@ -7,8 +7,8 @@ class CodebaseTest extends JanitorTestCase
 {
 	public function testCanFindFilesInCodebase()
 	{
-		$files    = $this->codebase->getFiles();
-		$file     = $files[$this->appPath.'/src/SomeClass.php'];
+		$files = $this->codebase->getFiles();
+		$file  = $files[$this->appPath.'/src/SomeClass.php'];
 
 		$this->assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $file);
 		$this->assertEquals('src/SomeClass.php', $file->getRelativePathname());
@@ -32,9 +32,18 @@ class CodebaseTest extends JanitorTestCase
 	{
 		$tokenized = $this->codebase->getTokenized();
 
-		$this->assertContains('app', $tokenized['show.blade.php']);
-		$this->assertContains('content', $tokenized['show.blade.php']);
-		$this->assertContains('some/partial', $tokenized['show.blade.php']);
+		$this->assertEquals([
+			5  => 'content',
+			18 => 'some/partial',
+			62 => 'app',
+		], $tokenized['show.blade.php']);
+	}
+
+	public function testCanTokenizeXmlFiles()
+	{
+		$tokenized = $this->codebase->getTokenized();
+
+		$this->assertContains('Janitor Test Suite', $tokenized['phpunit.xml']);
 	}
 
 	public function testCanTokenizeTwigFiles()

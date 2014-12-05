@@ -7,6 +7,11 @@ use Illuminate\View\Compilers\BladeCompiler;
 class BladeTokenizer extends PhpTokenizer
 {
 	/**
+	 * @type array
+	 */
+	protected $ignored = ['__data', '__path'];
+
+	/**
 	 * Tokenize a file
 	 *
 	 * @param string $file

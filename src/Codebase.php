@@ -7,6 +7,7 @@ use Janitor\Services\Tokenizers\DefaultTokenizer;
 use Janitor\Services\Tokenizers\JsonTokenizer;
 use Janitor\Services\Tokenizers\PhpTokenizer;
 use Janitor\Services\Tokenizers\TwigTokenizer;
+use Janitor\Services\Tokenizers\XmlTokenizer;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -54,7 +55,7 @@ class Codebase
 		$finder = new Finder();
 		$files  = $finder
 			->files()
-			->name('/\.(php|twig|json)$/')
+			->name('/\.(php|twig|json|xml)$/')
 			->in($folder);
 
 		$this->ignored = $ignored;
@@ -141,11 +142,9 @@ class Codebase
 		// and use it to extract the contents
 		switch ($file->getExtension()) {
 			case 'php':
-				if (strpos($file->getBasename(), 'blade.php') !== false) {
-					$tokenizer = new BladeTokenizer();
-				} else {
-					$tokenizer = new PhpTokenizer();
-				}
+				$tokenizer = strpos($file->getBasename(), 'blade.php') !== false
+					? new BladeTokenizer()
+					: new PhpTokenizer();
 				break;
 
 			case 'twig':
@@ -154,6 +153,10 @@ class Codebase
 
 			case 'json':
 				$tokenizer = new JsonTokenizer();
+				break;
+
+			case 'xml':
+				$tokenizer = new XmlTokenizer();
 				break;
 
 			default:
