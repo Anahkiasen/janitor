@@ -18,10 +18,14 @@ class View extends AbstractAnalyzedFile
     public function computeUsageMatrix()
     {
         $extension = '.'.$this->file->getExtension();
+        if (strpos($this->file->getBasename(), '.blade.php') !== false) {
+            $extension = '.blade.php';
+        }
 
         return [
             new UsageNeedle(1, $this->file->getPathname()),
             new UsageNeedle(0.5, $this->file->getBasename()),
+            new UsageNeedle(0.5, $this->file->getBasename($extension)),
             new UsageNeedle(0.25, $this->getNonumeralName($this->file->getBasename($extension))),
             new UsageNeedle(0.1, $this->getUnlocalizedName($this->file->getBasename($extension))),
         ];

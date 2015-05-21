@@ -26,7 +26,8 @@
 		"illuminate/filesystem": "~4.2",
 		"illuminate/routing": "~4.2",
 		"phpunit/phpunit": "^4.6",
-		"mockery/mockery": "^0.9.4"
+		"mockery/mockery": "^0.9.4",
+		"symfony/var-dumper": "^2.6"
 	},
 	"autoload": {
 		"psr-4": {

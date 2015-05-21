@@ -1,7 +1,7 @@
 <?php
 namespace Janitor\Abstracts;
 
-use Janitor\Entities\SplFileInfo;
+use Symfony\Component\Finder\SplFileInfo;
 
 abstract class AbstractAnalyzedFile extends AbstractAnalyzedEntity
 {
