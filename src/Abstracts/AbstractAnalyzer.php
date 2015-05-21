@@ -12,246 +12,246 @@ use Symfony\Component\Finder\Finder;
 
 abstract class AbstractAnalyzer
 {
-	/**
-	 * @type \Janitor\Codebase
-	 */
-	protected $codebase;
+    /**
+     * @type \Janitor\Codebase
+     */
+    protected $codebase;
 
-	/**
-	 * The folder of files to analyze
-	 *
-	 * @type string
-	 */
-	protected $folder;
+    /**
+     * The folder of files to analyze.
+     *
+     * @type string
+     */
+    protected $folder;
 
-	/**
-	 * The files containing the entities
-	 *
-	 * @type Collection|AbstractAnalyzedEntity[]
-	 */
-	protected $files;
+    /**
+     * The files containing the entities.
+     *
+     * @type Collection|AbstractAnalyzedEntity[]
+     */
+    protected $files;
 
-	/**
-	 * The entities being analyzed
-	 *
-	 * @type Collection|AbstractAnalyzedEntity[]
-	 */
-	protected $entities;
+    /**
+     * The entities being analyzed.
+     *
+     * @type Collection|AbstractAnalyzedEntity[]
+     */
+    protected $entities;
 
-	/**
-	 * @type OutputInterface
-	 */
-	protected $output;
+    /**
+     * @type OutputInterface
+     */
+    protected $output;
 
-	/**
-	 * @param \Janitor\Codebase $codebase
-	 */
-	public function __construct(Codebase $codebase)
-	{
-		$this->codebase = $codebase;
-	}
+    /**
+     * @param \Janitor\Codebase $codebase
+     */
+    public function __construct(Codebase $codebase)
+    {
+        $this->codebase = $codebase;
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// ENTITIES //////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// ENTITIES //////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Compute the entities from the information
-	 * that was passed to the analyzer
-	 *
-	 * @return AbstractAnalyzedEntity[]
-	 */
-	abstract protected function createEntities();
+    /**
+     * Compute the entities from the information
+     * that was passed to the analyzer.
+     *
+     * @return AbstractAnalyzedEntity[]
+     */
+    abstract protected function createEntities();
 
-	/**
-	 * Filter out ignored entities
-	 *
-	 * @return Collection
-	 */
-	protected function filterEntities()
-	{
-		$ignored = $this->codebase->getIgnored();
+    /**
+     * Filter out ignored entities.
+     *
+     * @return Collection
+     */
+    protected function filterEntities()
+    {
+        $ignored = $this->codebase->getIgnored();
 
-		$entities = new Collection($this->createEntities());
-		$entities = $entities->filter(function (AbstractAnalyzedEntity $entity) use ($ignored) {
-			return !Str::contains($entity->name, $ignored);
-		});
+        $entities = new Collection($this->createEntities());
+        $entities = $entities->filter(function (AbstractAnalyzedEntity $entity) use ($ignored) {
+            return !Str::contains($entity->name, $ignored);
+        });
 
-		return $entities;
-	}
+        return $entities;
+    }
 
-	/**
-	 * @return Collection|AbstractAnalyzedEntity[]
-	 */
-	public function getEntities()
-	{
-		return $this->entities;
-	}
+    /**
+     * @return Collection|AbstractAnalyzedEntity[]
+     */
+    public function getEntities()
+    {
+        return $this->entities;
+    }
 
-	/**
-	 * @param Collection|AbstractAnalyzedEntity[] $entities
-	 */
-	public function setEntities(Collection $entities)
-	{
-		$this->entities = $entities;
-	}
+    /**
+     * @param Collection|AbstractAnalyzedEntity[] $entities
+     */
+    public function setEntities(Collection $entities)
+    {
+        $this->entities = $entities;
+    }
 
-	/**
-	 * Get analyzed entities unused by a certain threshold
-	 *
-	 * @param integer $threshold
-	 *
-	 * @return Collection|AbstractAnalyzedEntity[]
-	 */
-	public function getUnusedEntities($threshold = 0)
-	{
-		return $this->entities->filter(function (AbstractAnalyzedEntity $entity) use ($threshold) {
-			return $entity->usage <= $threshold;
-		});
-	}
+    /**
+     * Get analyzed entities unused by a certain threshold.
+     *
+     * @param int $threshold
+     *
+     * @return Collection|AbstractAnalyzedEntity[]
+     */
+    public function getUnusedEntities($threshold = 0)
+    {
+        return $this->entities->filter(function (AbstractAnalyzedEntity $entity) use ($threshold) {
+            return $entity->usage <= $threshold;
+        });
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	/////////////////////////////// FILES ////////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// FILES ////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Setup the files to analyze
-	 *
-	 * @param string          $folder
-	 * @param string|string[] $extensions
-	 */
-	public function setFiles($folder, $extensions)
-	{
-		// Create Finder
-		$finder     = new Finder();
-		$extensions = (array) $extensions;
-		$extensions = implode('|', $extensions);
-		$finder     = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
+    /**
+     * Setup the files to analyze.
+     *
+     * @param string          $folder
+     * @param string|string[] $extensions
+     */
+    public function setFiles($folder, $extensions)
+    {
+        // Create Finder
+        $finder     = new Finder();
+        $extensions = (array) $extensions;
+        $extensions = implode('|', $extensions);
+        $finder     = $finder->files()->in($folder)->name('/\.('.$extensions.')/');
 
-		// Set ignored patterns
-		foreach ($this->codebase->getIgnored() as $pattern) {
-			$finder = $finder->notPath($pattern)->notName($pattern);
-		}
+        // Set ignored patterns
+        foreach ($this->codebase->getIgnored() as $pattern) {
+            $finder = $finder->notPath($pattern)->notName($pattern);
+        }
 
-		// Wrap into Collection
-		$files = iterator_to_array($finder);
-		$files = new Collection($files);
+        // Wrap into Collection
+        $files = iterator_to_array($finder);
+        $files = new Collection($files);
 
-		$this->folder = $folder;
-		$this->files  = $files;
-	}
+        $this->folder = $folder;
+        $this->files  = $files;
+    }
 
-	/**
-	 * Get all analyzed files
-	 *
-	 * @return Collection|AbstractAnalyzedEntity[]
-	 */
-	public function getFiles()
-	{
-		return $this->files;
-	}
+    /**
+     * Get all analyzed files.
+     *
+     * @return Collection|AbstractAnalyzedEntity[]
+     */
+    public function getFiles()
+    {
+        return $this->files;
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	/////////////////////////////// OUTPUT ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// OUTPUT ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @param string $message
-	 */
-	public function line($message)
-	{
-		if (!$this->output) {
-			return;
-		}
+    /**
+     * @param string $message
+     */
+    public function line($message)
+    {
+        if (!$this->output) {
+            return;
+        }
 
-		$this->output->writeln('<comment>'.$message.'</comment>');
-	}
+        $this->output->writeln('<comment>'.$message.'</comment>');
+    }
 
-	/**
-	 * @param OutputInterface $output
-	 */
-	public function setOutput(OutputInterface $output)
-	{
-		$this->output = $output;
-	}
+    /**
+     * @param OutputInterface $output
+     */
+    public function setOutput(OutputInterface $output)
+    {
+        $this->output = $output;
+    }
 
-	/**
-	 * @param array|Collection $entries
-	 *
-	 * @return ProgressBar
-	 */
-	protected function getProgressBar($entries)
-	{
-		$progress = new ProgressBar($this->output ?: new NullOutput(), sizeof($entries));
-		$progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <info>%message%</info>');
-		$progress->start();
+    /**
+     * @param array|Collection $entries
+     *
+     * @return ProgressBar
+     */
+    protected function getProgressBar($entries)
+    {
+        $progress = new ProgressBar($this->output ?: new NullOutput(), count($entries));
+        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <info>%message%</info>');
+        $progress->start();
 
-		return $progress;
-	}
+        return $progress;
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// ANALYZE ///////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// ANALYZE ///////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Analyze the entities and compute their usage
-	 *
-	 * @return Collection
-	 */
-	public function analyze()
-	{
-		$this->line('Tokenizing your codebase, this can take a few moments');
-		$this->entities = $this->filterEntities();
-		$codebase       = $this->codebase->getTokenized();
+    /**
+     * Analyze the entities and compute their usage.
+     *
+     * @return Collection
+     */
+    public function analyze()
+    {
+        $this->line('Tokenizing your codebase, this can take a few moments');
+        $this->entities = $this->filterEntities();
+        $codebase       = $this->codebase->getTokenized();
 
-		/** @type AbstractAnalyzedEntity $entity */
-		$this->line('Analyzing codebase...');
-		$progress = $this->getProgressBar($this->entities);
+        /* @type AbstractAnalyzedEntity $entity */
+        $this->line('Analyzing codebase...');
+        $progress = $this->getProgressBar($this->entities);
 
-		foreach ($this->entities as $key => $entity) {
-			$progress->advance();
-			$progress->setMessage($entity->name);
+        foreach ($this->entities as $key => $entity) {
+            $progress->advance();
+            $progress->setMessage($entity->name);
 
-			foreach ($entity->getUsageMatrix() as $usageNeedle) {
-				foreach ($codebase as $file => $tokens) {
-					if (!$tokens) {
-						continue;
-					}
+            foreach ($entity->getUsageMatrix() as $usageNeedle) {
+                foreach ($codebase as $file => $tokens) {
+                    if (!$tokens) {
+                        continue;
+                    }
 
-					if ($token = $this->containsTokens($tokens, $usageNeedle)) {
-						$this->entities[$key]->usage        = $usageNeedle->usage;
-						$this->entities[$key]->occurences[] = array(
-							'file'    => $file,
-							'context' => $token,
-						);
+                    if ($token = $this->containsTokens($tokens, $usageNeedle)) {
+                        $this->entities[$key]->usage        = $usageNeedle->usage;
+                        $this->entities[$key]->occurences[] = [
+                            'file'    => $file,
+                            'context' => $token,
+                        ];
 
-						break 2;
-					}
-				}
-			}
-		}
+                        break 2;
+                    }
+                }
+            }
+        }
 
-		$progress->finish();
+        $progress->finish();
 
-		return $this->entities;
-	}
+        return $this->entities;
+    }
 
-	/**
-	 * Check if multiple string appear in an array
-	 *
-	 * @param array       $tokens
-	 * @param UsageNeedle $usageNeedle
-	 *
-	 * @return string|false
-	 */
-	protected function containsTokens(array $tokens, UsageNeedle $usageNeedle)
-	{
-		foreach ($tokens as $token) {
-			if ($usageNeedle->matches($token)) {
-				return $token;
-			}
-		}
+    /**
+     * Check if multiple string appear in an array.
+     *
+     * @param array       $tokens
+     * @param UsageNeedle $usageNeedle
+     *
+     * @return string|false
+     */
+    protected function containsTokens(array $tokens, UsageNeedle $usageNeedle)
+    {
+        foreach ($tokens as $token) {
+            if ($usageNeedle->matches($token)) {
+                return $token;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

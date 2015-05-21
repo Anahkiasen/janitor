@@ -10,57 +10,57 @@ use Janitor\Interfaces\AnalyzerInterface;
 
 class RoutesAnalyzer extends AbstractAnalyzer implements AnalyzerInterface
 {
-	/**
-	 * @type RouteInstance[]
-	 */
-	protected $routes;
+    /**
+     * @type RouteInstance[]
+     */
+    protected $routes;
 
-	/**
-	 * @param Codebase $codebase
-	 */
-	public function __construct(Codebase $codebase)
-	{
-		parent::__construct($codebase);
+    /**
+     * @param Codebase $codebase
+     */
+    public function __construct(Codebase $codebase)
+    {
+        parent::__construct($codebase);
 
-		if ($routes = $codebase->getRoutes()) {
-			$this->routes = $routes;
-		}
-	}
+        if ($routes = $codebase->getRoutes()) {
+            $this->routes = $routes;
+        }
+    }
 
-	/**
-	 * @param \Illuminate\Routing\Route[] $routes
-	 */
-	public function setRoutes($routes)
-	{
-		$this->routes = $routes;
-	}
+    /**
+     * @param \Illuminate\Routing\Route[] $routes
+     */
+    public function setRoutes($routes)
+    {
+        $this->routes = $routes;
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	////////////////////////////// ENTITIES //////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    ////////////////////////////// ENTITIES //////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Compute the entities from the information
-	 * that was passed to the analyzer
-	 *
-	 * @return \Janitor\Abstracts\AbstractAnalyzedEntity[]
-	 */
-	protected function createEntities()
-	{
-		$entities = [];
-		if (!$this->routes) {
-			throw new UndefinedSubjectException();
-		}
+    /**
+     * Compute the entities from the information
+     * that was passed to the analyzer.
+     *
+     * @return \Janitor\Abstracts\AbstractAnalyzedEntity[]
+     */
+    protected function createEntities()
+    {
+        $entities = [];
+        if (!$this->routes) {
+            throw new UndefinedSubjectException();
+        }
 
-		/** @type \Illuminate\Routing\Route $route */
-		foreach ($this->routes as $route) {
-			$name   = $route->getMethods()[0].' '.$route->getUri();
-			$entity = new Route($this->folder, $name);
-			$entity->setRoute($route);
+        /** @type \Illuminate\Routing\Route $route */
+        foreach ($this->routes as $route) {
+            $name   = $route->getMethods()[0].' '.$route->getUri();
+            $entity = new Route($this->folder, $name);
+            $entity->setRoute($route);
 
-			$entities[] = $entity;
-		}
+            $entities[] = $entity;
+        }
 
-		return $entities;
-	}
+        return $entities;
+    }
 }

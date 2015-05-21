@@ -1,29 +1,28 @@
 <?php
 namespace Janitor\Console\Commands;
 
-use Illuminate\Console\Command;
 use Janitor\Abstracts\Console\AbstractAnalyzerCommand;
 use Janitor\Services\Analyzers\RoutesAnalyzer;
 
 class CleanRoutes extends AbstractAnalyzerCommand
 {
-	/**
-	 * @type string
-	 */
-	protected $name = 'janitor:routes';
+    /**
+     * @type string
+     */
+    protected $name = 'janitor:routes';
 
-	/**
-	 * @type string
-	 */
-	protected $description = 'Look for unused routes';
+    /**
+     * @type string
+     */
+    protected $description = 'Look for unused routes';
 
-	/**
-	 * @param RoutesAnalyzer $analyzer
-	 */
-	public function __construct(RoutesAnalyzer $analyzer)
-	{
-		parent::__construct();
+    /**
+     * @param RoutesAnalyzer $analyzer
+     */
+    public function __construct(RoutesAnalyzer $analyzer)
+    {
+        parent::__construct();
 
-		$this->analyzer = $analyzer;
-	}
+        $this->analyzer = $analyzer;
+    }
 }

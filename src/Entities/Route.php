@@ -8,50 +8,50 @@ use Janitor\UsageNeedle;
 
 class Route extends AbstractAnalyzedEntity
 {
-	/**
-	 * @type RouteInstance
-	 */
-	protected $route;
+    /**
+     * @type RouteInstance
+     */
+    protected $route;
 
-	//////////////////////////////////////////////////////////////////////
-	/////////////////////////////// ROUTE ////////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    /////////////////////////////// ROUTE ////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * @return RouteInstance
-	 */
-	public function getRoute()
-	{
-		return $this->route;
-	}
+    /**
+     * @return RouteInstance
+     */
+    public function getRoute()
+    {
+        return $this->route;
+    }
 
-	/**
-	 * @param RouteInstance $route
-	 */
-	public function setRoute(RouteInstance $route)
-	{
-		// Compile route
-		$request = new Request();
-		$route->matches($request);
+    /**
+     * @param RouteInstance $route
+     */
+    public function setRoute(RouteInstance $route)
+    {
+        // Compile route
+        $request = new Request();
+        $route->matches($request);
 
-		$this->route = $route;
-	}
+        $this->route = $route;
+    }
 
-	//////////////////////////////////////////////////////////////////////
-	//////////////////////////// USAGE MATRIX ////////////////////////////
-	//////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////
+    //////////////////////////// USAGE MATRIX ////////////////////////////
+    //////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Compute the usage matrix of the analyzed entity
-	 *
-	 * @return UsageNeedle[]
-	 */
-	public function computeUsageMatrix()
-	{
-		return array(
-			new UsageNeedle(1, $this->route->getActionName()),
-			new UsageNeedle(0.5, $this->route->getName()),
-			new UsageNeedle(0.25, $this->route->getCompiled()->getRegex(), true),
-		);
-	}
+    /**
+     * Compute the usage matrix of the analyzed entity.
+     *
+     * @return UsageNeedle[]
+     */
+    public function computeUsageMatrix()
+    {
+        return [
+            new UsageNeedle(1, $this->route->getActionName()),
+            new UsageNeedle(0.5, $this->route->getName()),
+            new UsageNeedle(0.25, $this->route->getCompiled()->getRegex(), true),
+        ];
+    }
 }

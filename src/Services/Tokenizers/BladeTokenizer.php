@@ -6,24 +6,24 @@ use Illuminate\View\Compilers\BladeCompiler;
 
 class BladeTokenizer extends PhpTokenizer
 {
-	/**
-	 * @type array
-	 */
-	protected $ignored = ['__data', '__path'];
+    /**
+     * @type array
+     */
+    protected $ignored = ['__data', '__path'];
 
-	/**
-	 * Tokenize a file
-	 *
-	 * @param string $file
-	 *
-	 * @return string[]
-	 */
-	public function tokenize($file)
-	{
-		// Transform into PHP file
-		$compiler = new BladeCompiler(new Filesystem(), 'cache');
-		$compiled = $compiler->compileString($file);
+    /**
+     * Tokenize a file.
+     *
+     * @param string $file
+     *
+     * @return string[]
+     */
+    public function tokenize($file)
+    {
+        // Transform into PHP file
+        $compiler = new BladeCompiler(new Filesystem(), 'cache');
+        $compiled = $compiler->compileString($file);
 
-		return parent::tokenize($compiled);
-	}
+        return parent::tokenize($compiled);
+    }
 }
